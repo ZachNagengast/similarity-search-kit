@@ -1,6 +1,6 @@
 //
 //  CharacterSplitter.swift
-//  
+//
 //
 //  Created by Zach Nagengast on 4/25/23.
 //
@@ -48,4 +48,3 @@ public class CharacterSplitter: TextSplitterProtocol {
         return (chunks, nil)
     }
 }
-

@@ -25,7 +25,7 @@ let package = Package(
         .library(
             name: "SimilaritySearchKitMiniLMMultiQA",
             targets: ["SimilaritySearchKitMiniLMMultiQA"]
-        )
+        ),
     ],
     targets: [
         .target(
@@ -55,7 +55,7 @@ let package = Package(
                 "SimilaritySearchKit",
                 "SimilaritySearchKitDistilbert",
                 "SimilaritySearchKitMiniLMAll",
-                "SimilaritySearchKitMiniLMMultiQA"
+                "SimilaritySearchKitMiniLMMultiQA",
             ],
             path: "Tests/SimilaritySearchKitTests",
             resources: [.process("Resources")]

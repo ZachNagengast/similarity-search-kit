@@ -4,7 +4,6 @@
 
 **SimilaritySearchKit** is a Swift package providing *local-first* text embeddings and semantic search functionality for iOS and macOS applications. Emphasizing speed, flexibility, and privacy, it supports a variety of built-in distance metrics and metal-accelerated machine learning models, in addition to seamless integration with bring-your-own options.
 
-
 <details>
 <summary>Chat with Files Example Video</summary>
 <img src="https://user-images.githubusercontent.com/1981179/234986127-8fa5daac-d041-4f1e-b7e5-175ff49271bb.gif">
@@ -34,6 +33,7 @@ By leveraging **SimilaritySearchKit**, developers can easily create powerful app
 ## Installation
 
 To install **SimilaritySearchKit**, simply add it as a dependency to your Swift project using the Swift Package Manager. Add the following line to your dependencies array in your Package.swift file:
+
 ```swift
 .package(url: "https://github.com/ZachNagengast/SimilaritySearchKit.git", from: "0.0.1")
 ```
@@ -84,13 +84,13 @@ Finally, query the index for the most similar items to a given query:
 let results = await similarityIndex.search("When was metal released?")
 print(results)
 ```
+
 Which outputs a **SearchResult** array:
 
 `[SearchResult(id: "id1", score: 0.86216, metadata: ["source": "example.pdf"])]`
 
-
-
 ## Available Models
+
 | Model | Use Case | Size | Source |
 | --- | --- | --- | --- |
 | `NaturalLanguage` | Text similarity, faster inference | Built-in | [Apple](https://developer.apple.com/documentation/naturallanguage/nlembedding) |
@@ -101,6 +101,7 @@ Which outputs a **SearchResult** array:
 Models conform the the `EmbeddingProtocol` and can be used interchangeably with the `SimilarityIndex` class.
 
 ## Available Metrics
+
 | Metric | Description |
 | --- | --- |
 | `DotProduct` | Measures the similarity between two vectors as the product of their magnitudes |
@@ -117,6 +118,7 @@ All the main parts of the `SimilarityIndex` can be overriden with custom impleme
 ### EmbeddingProtocol
 
 Accepts a string and returns an array of floats representing the embedding of the input text.
+
 ```swift
 func encode(sentence: String) async -> [Float]?
 ```
@@ -124,6 +126,7 @@ func encode(sentence: String) async -> [Float]?
 ### DistanceMetricProtocol
 
 Accepts a query embedding vector and a list of embeddings vectors and returns a tuple of the distance metric score and index of the nearest neighbor.
+
 ```swift
 func findNearest(for queryEmbedding: [Float], in neighborEmbeddings: [[Float]], resultsCount: Int) -> [(Float, Int)]
 ```
@@ -131,7 +134,6 @@ func findNearest(for queryEmbedding: [Float], in neighborEmbeddings: [[Float]], 
 ### VectorStoreProtocol
 
 Save and load index items. The default implementation uses JSON files, but this can be overriden to use any storage mechanism.
-```
 
 ```swift
 func saveIndex(items: [IndexItem], to url: URL, as name: String) throws -> URL
@@ -139,11 +141,11 @@ func loadIndex(from url: URL) throws -> [IndexItem]
 func listIndexes(at url: URL) -> [URL]
 ```
 
-
 ## Acknowledgements
 
 Many parts of this project were derived from the existing code, either already in swift, or translated into swift thanks to ChatGPT. These are some of the main projects that were referenced:
-- HuggingFace Transformers 
+
+- HuggingFace Transformers
   - https://github.com/huggingface/transformers
   - https://github.com/huggingface/swift-coreml-transformers
 - Sentence Transformers https://github.com/UKPLab/sentence-transformers
@@ -172,12 +174,12 @@ Here's a short list of some features that are planned for future releases:
   - Can be used to merge several query results into one, and clean up irrelevant text
 - [ ] Metal acceleration for distance calcs
 
-
 ## Contributing
 
 If you have any ideas, suggestions, or bugs to report, please open an issue or submit a pull request from your fork. Contributions are always welcome!
 
 Notes on the file structure:
+
 - `Sources/SimilaritySearchKit/Core` contains the main similarity search logic and helper methods that run 100% natively (i.e. *no dependencies*).
 - `Sources/SimilaritySearchKit/AddOns` contains optional embedding models, and any other logic that *require external dependencies* and should be added as separate targets and imports. This is intended to reduce the size of the binary for users who don't need them.
 

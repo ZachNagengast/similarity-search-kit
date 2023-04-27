@@ -1,6 +1,6 @@
 //
 //  DistilbertEmbeddings.swift
-//  
+//
 //
 //  Created by Zach Nagengast on 4/12/23.
 //
@@ -21,15 +21,16 @@ public class DistilbertEmbeddings: EmbeddingsProtocol {
         modelConfig.computeUnits = .all
 
         do {
-            model = try msmarco_distilbert_base_tas_b_512_single_quantized(configuration: modelConfig)
+            self.model = try msmarco_distilbert_base_tas_b_512_single_quantized(configuration: modelConfig)
         } catch {
             fatalError("Failed to load the Core ML model. Error: \(error.localizedDescription)")
         }
 
-        tokenizer = BertTokenizer()
+        self.tokenizer = BertTokenizer()
     }
 
     // MARK: - Dense Embeddings
+
     public func encode(sentence: String) async -> [Float]? {
         // Encode input text as bert tokens
         let inputTokens = tokenizer.buildModelTokens(sentence: sentence)
@@ -58,5 +59,3 @@ public class DistilbertEmbeddings: EmbeddingsProtocol {
         return embeddingsArray
     }
 }
-
-

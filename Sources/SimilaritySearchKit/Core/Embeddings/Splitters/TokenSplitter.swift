@@ -1,6 +1,6 @@
 //
 //  TokenSplitter.swift
-//  
+//
 //
 //  Created by Zach Nagengast on 4/25/23.
 //
@@ -14,10 +14,10 @@ public class TokenSplitter: TextSplitterProtocol {
     let tokenizer: any TokenizerProtocol
 
     public required init(withTokenizer: any TokenizerProtocol) {
-        tokenizer = withTokenizer
+        self.tokenizer = withTokenizer
     }
 
-    public func split(text: String, chunkSize: Int? = 510, overlapSize: Int? = 0) -> ([String], [[String]]?) {
+    public func split(text: String, chunkSize: Int? = 510, overlapSize _: Int? = 0) -> ([String], [[String]]?) {
         // Return an empty list if the text is empty or whitespace
         if text.isEmpty || text.trimmingCharacters(in: .whitespaces).isEmpty {
             return ([], [])

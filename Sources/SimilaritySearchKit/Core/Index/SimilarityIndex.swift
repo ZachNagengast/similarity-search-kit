@@ -1,6 +1,6 @@
 //
 //  SimilarityIndex.swift
-//  
+//
 //
 //  Created by Zach Nagengast on 4/10/23.
 //
@@ -93,7 +93,7 @@ public class SimilarityIndex {
 
     public enum VectorStoreType {
         case json
-        // TODO
+        // TODO:
         // case mlmodel
         // case protobuf
         // case sqlite
@@ -146,7 +146,7 @@ public class SimilarityIndex {
         var indexIds: [String] = []
         var indexEmbeddings: [[Float]] = []
 
-        self.indexItems.forEach { item in
+        indexItems.forEach { item in
             indexIds.append(item.id)
             indexEmbeddings.append(item.embedding)
         }
@@ -304,8 +304,8 @@ extension SimilarityIndex {
 
         if let vectorStorePath = vectorStore.listIndexes(at: basePath).first(where: { $0.lastPathComponent.contains(indexName) }) {
             let loadedIndexItems = try vectorStore.loadIndex(from: vectorStorePath)
-            self.addItems(loadedIndexItems)
-            print("Loaded \(self.indexItems.count) index items from \(vectorStorePath.absoluteString)")
+            addItems(loadedIndexItems)
+            print("Loaded \(indexItems.count) index items from \(vectorStorePath.absoluteString)")
             return loadedIndexItems
         }
 

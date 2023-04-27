@@ -17,7 +17,7 @@ struct ContentView: View {
     @State private var similarityResults: [SearchResult] = []
     @State private var similarityIndex: SimilarityIndex?
 
-    func loadIndex () async {
+    func loadIndex() async {
         similarityIndex = await SimilarityIndex(
             model: DistilbertEmbeddings(),
             metric: CosineSimilarity()
@@ -36,8 +36,6 @@ struct ContentView: View {
         similarityResults = results
     }
 
-
-
     var body: some View {
         VStack {
             TextField("Index sentence 1", text: $indexSentence1)
@@ -51,7 +49,6 @@ struct ContentView: View {
             TextField("Index sentence 3", text: $indexSentence3)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
-
 
             TextField("Query sentence", text: $querySentence)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -74,7 +71,7 @@ struct ContentView: View {
                 Text("Score: \(result.score)\nText: \(result.text)")
             }
             .padding()
-            .onAppear() {
+            .onAppear {
                 Task {
                     await loadIndex()
                 }

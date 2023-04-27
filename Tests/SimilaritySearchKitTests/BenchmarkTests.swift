@@ -1,6 +1,6 @@
 //
 //  BenchmarkTests.swift
-//  
+//
 //
 //  Created by Zach Nagengast on 4/13/23.
 //
@@ -14,7 +14,6 @@ import CoreML
 
 @available(macOS 13.0, *)
 class BenchmarkTests: XCTestCase {
-
     func testDistilbertTokenization() {
         let passageText = MSMarco.testPassage.text
         let tokenizer = BertTokenizer()
@@ -64,10 +63,10 @@ class BenchmarkTests: XCTestCase {
         let passageTexts = MSMarco.passageTexts[0..<100]
         let tokenizer = BertTokenizer()
 
-        self.measure {
+        measure {
             print("Tokenizing \(passageTexts.count) passage texts")
             for passageText in passageTexts {
-                let _ = tokenizer.tokenize(text: passageText)
+                _ = tokenizer.tokenize(text: passageText)
             }
         }
     }
@@ -85,10 +84,10 @@ class BenchmarkTests: XCTestCase {
             inputs.append((input_id, attention_mask))
         }
 
-        self.measure {
+        measure {
             print("Generating embeddings for \(inputs.count) pre-tokenized inputs")
             for input in inputs {
-                let _ = model.generateDistilbertEmbeddings(inputIds: input.0, attentionMask: input.1)
+                _ = model.generateDistilbertEmbeddings(inputIds: input.0, attentionMask: input.1)
             }
         }
     }
@@ -105,7 +104,7 @@ class BenchmarkTests: XCTestCase {
             await withTaskGroup(of: Void.self) { taskGroup in
                 for passageText in passageTexts {
                     taskGroup.addTask {
-                        let _ = await model.encode(sentence: passageText)
+                        _ = await model.encode(sentence: passageText)
                     }
                 }
             }
@@ -123,7 +122,7 @@ class BenchmarkTests: XCTestCase {
         let testAmount = 100
         let passageIds = Array(0..<testAmount).map { _ in UUID() }
         let passageTexts = Array(MSMarco.passageTexts[0..<testAmount])
-        let passageUrls = MSMarco.passageUrls[0..<testAmount].map { url in ["source": url]}
+        let passageUrls = MSMarco.passageUrls[0..<testAmount].map { url in ["source": url] }
 
         print("\nGenerating similarity index for \(testAmount) passages")
         let similarityIndex = await SimilarityIndex(model: DistilbertEmbeddings())
@@ -159,20 +158,9 @@ class BenchmarkTests: XCTestCase {
         await fulfillment(of: [expectation], timeout: 60)
     }
 
+    func testNativePerformanceTokenization() {}
 
+    func testNativePerformanceEmbeddings() {}
 
-    func testNativePerformanceTokenization() {
-
-    }
-
-    func testNativePerformanceEmbeddings() {
-
-    }
-
-    func testNativePerformanceSearch() {
-
-    }
-
-
-
+    func testNativePerformanceSearch() {}
 }

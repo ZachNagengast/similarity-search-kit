@@ -98,7 +98,6 @@ public class Files {
         return fileInfoList
     }
 
-
     public class func readContentOfFile(fileURL: URL) -> String? {
         do {
             let fileContent = try String(contentsOf: fileURL, encoding: .utf8)
@@ -117,7 +116,7 @@ public class Files {
         }
 
         if text.firstMatch(of: regex) != nil {
-          return true
+            return true
         }
 
         return false
@@ -148,7 +147,7 @@ public class Files {
     // Function to write the CSV string to a file
     public class func writeStringsToFile(inputArray: [String], filename: String) {
         let csvString = inputArray.map { "\"\($0.replacingOccurrences(of: "\"", with: "\"\""))\"" }.joined(separator: ",\n")
-        
+
         let fileManager = FileManager.default
         let documentDirectoryURL = try? fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
 
@@ -294,4 +293,3 @@ public struct DiskItem: Identifiable, Hashable {
         return (childItems, currentSize, files, folders)
     }
 }
-

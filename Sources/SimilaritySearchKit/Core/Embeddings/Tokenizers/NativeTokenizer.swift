@@ -1,6 +1,6 @@
 //
 //  NativeTokenizer.swift
-//  
+//
 //
 //  Created by Zach Nagengast on 4/26/23.
 //
@@ -24,4 +24,3 @@ public class NativeTokenizer: TokenizerProtocol {
         return tokens.joined(separator: " ")
     }
 }
-

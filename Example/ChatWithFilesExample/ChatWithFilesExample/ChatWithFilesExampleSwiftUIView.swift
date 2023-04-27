@@ -12,7 +12,7 @@ import SimilaritySearchKitMiniLMAll
 import SimilaritySearchKitMiniLMMultiQA
 
 #if os(macOS)
-import AppKit
+    import AppKit
 #endif
 
 struct ChatWithFilesExampleSwiftUIView: View {
@@ -59,7 +59,6 @@ struct ChatWithFilesExampleSwiftUIView: View {
     @State private var currentTokenizer: any TokenizerProtocol = BertTokenizer()
     @State private var currentSplitter: any TextSplitterProtocol = TokenSplitter(withTokenizer: BertTokenizer())
 
-
     @State private var similarityIndex: SimilarityIndex?
 
     var files = Files()
@@ -69,18 +68,18 @@ struct ChatWithFilesExampleSwiftUIView: View {
             Form {
                 Section(header: Text("Embeddings")) {
                     Picker("Model:", selection: $currentModel) {
-                            Text("Distilbert").tag(EmbeddingModelType.distilbert)
-                            Text("MiniLM All").tag(EmbeddingModelType.minilmAll)
-                            Text("MiniLM MultiQA").tag(EmbeddingModelType.minilmMultiQA)
-                            Text("Apple NaturalLanguage").tag(EmbeddingModelType.native)
-                        }
-                        .pickerStyle(MenuPickerStyle())
-                        .onChange(of: currentModel) { newValue in
-                            folderContents = nil
-                            folderTextChunks = nil
-                            similarityIndex = nil
-                            updateIndexComponents()
-                        }
+                        Text("Distilbert").tag(EmbeddingModelType.distilbert)
+                        Text("MiniLM All").tag(EmbeddingModelType.minilmAll)
+                        Text("MiniLM MultiQA").tag(EmbeddingModelType.minilmMultiQA)
+                        Text("Apple NaturalLanguage").tag(EmbeddingModelType.native)
+                    }
+                    .pickerStyle(MenuPickerStyle())
+                    .onChange(of: currentModel) { _ in
+                        folderContents = nil
+                        folderTextChunks = nil
+                        similarityIndex = nil
+                        updateIndexComponents()
+                    }
 
                     Picker("Scoring Function:", selection: $comparisonAlgorithm) {
                         Text("Dot Product").tag(SimilarityMetricType.dotproduct)
@@ -88,10 +87,9 @@ struct ChatWithFilesExampleSwiftUIView: View {
                         Text("Euclidean Distance").tag(SimilarityMetricType.euclidian)
                     }
                     .pickerStyle(MenuPickerStyle())
-                    .onChange(of: comparisonAlgorithm) { newValue in
+                    .onChange(of: comparisonAlgorithm) { _ in
                         updateIndexComponents()
                     }
-
                 }
 
                 Section(header: Text("Splitting")) {
@@ -100,7 +98,7 @@ struct ChatWithFilesExampleSwiftUIView: View {
                         Text("Words").tag(TextSplitterType.character)
                         Text("Recursive").tag(TextSplitterType.recursive)
                     }
-                    .onChange(of: chunkMethod) { newValue in
+                    .onChange(of: chunkMethod) { _ in
                         updateIndexComponents()
                     }
 
@@ -198,11 +196,9 @@ struct ChatWithFilesExampleSwiftUIView: View {
             .padding()
             .frame(minWidth: 500, maxWidth: .infinity)
 
-
-
             Spacer()
             if isLoading {
-                ProgressView("\(progressStage): \(Int(progressCurrent)) of \(Int(progressTotal))", value: progressCurrent/progressTotal*progressTotal, total: progressTotal)
+                ProgressView("\(progressStage): \(Int(progressCurrent)) of \(Int(progressTotal))", value: progressCurrent / progressTotal * progressTotal, total: progressTotal)
                     .frame(maxWidth: 400, maxHeight: .infinity)
                     .padding()
             } else {
@@ -252,27 +248,24 @@ struct ChatWithFilesExampleSwiftUIView: View {
 
             .frame(minWidth: 400)
             .padding()
-
-
         }
         .navigationTitle("SimilaritySearchKit Example: Chat With Files")
-        .onAppear() {
+        .onAppear {
             columnVisibility = .all
             updateIndexComponents()
         }
         .toolbar {
             ToolbarItem(id: "export") {
-                HStack{
+                HStack {
                     Button("Export Index For Pinecone") {
                         print("Export Index For Pinecone")
-                        guard let index = similarityIndex else { return}
+                        guard let index = similarityIndex else { return }
                         exportIndex(index)
                     }
                     .disabled(similarityIndex == nil)
                 }
             }
         }
-
     }
 
     private func updateIndexComponents() {
@@ -413,8 +406,8 @@ struct ChatWithFilesExampleSwiftUIView: View {
 
     private func generateIndexFromChunks() async {
         guard let folderTextIds = folderTextIds,
-              let folderTextChunks = folderTextChunks,
-              let folderTextMetadata = folderTextMetadata else { return }
+            let folderTextChunks = folderTextChunks,
+            let folderTextMetadata = folderTextMetadata else { return }
 
         isLoading = true
         progressStage = "Vectorizing"
@@ -424,7 +417,7 @@ struct ChatWithFilesExampleSwiftUIView: View {
         let elapsedTime = await clock.measure {
             let index = await SimilarityIndex(model: embeddingModel, metric: distanceMetric)
 
-            await index.addItems(ids: folderTextIds, texts: folderTextChunks, metadata: folderTextMetadata) { completedItemId in
+            await index.addItems(ids: folderTextIds, texts: folderTextChunks, metadata: folderTextMetadata) { _ in
                 progressCurrent += 1
             }
 
@@ -436,7 +429,6 @@ struct ChatWithFilesExampleSwiftUIView: View {
         embeddingElapsedTime = elapsedTime
 
         isLoading = false
-
     }
 
     private func searchIndexWithQuery(query: String, top: Int) async {
@@ -473,7 +465,7 @@ struct ChatWithFilesExampleSwiftUIView: View {
                 id: item.id,
                 metadata: [
                     "text": item.text,
-                    "source": item.metadata["source"] ?? ""
+                    "source": item.metadata["source"] ?? "",
                 ],
                 values: item.embedding
             )
@@ -509,7 +501,7 @@ struct DiskItemTableView: View {
     @Binding var folderContents: [DiskItem]?
     var folderContentsSize: UInt64 {
         return folderContents?.reduce(UInt64(0)) { totalSize, diskItem in
-            return totalSize + UInt64(diskItem.diskSize)
+            totalSize + UInt64(diskItem.diskSize)
         } ?? 0
     }
 
@@ -532,7 +524,6 @@ struct DiskItemTableView: View {
     }
 }
 
-
 struct SearchResultTableView: View {
     @Binding var searchResults: [SimilarityIndex.SearchResult]?
     @Binding var searchQuery: String
@@ -551,10 +542,10 @@ struct SearchResultTableView: View {
                     Text(result.text)
                 }
                 TableColumn("Source") { result in
-                    Text(URL(fileURLWithPath:result.metadata["source"]!).lastPathComponent)
+                    Text(URL(fileURLWithPath: result.metadata["source"]!).lastPathComponent)
                 }
             }
-            .onChange(of: selectedResultId) { newValue in
+            .onChange(of: selectedResultId) { _ in
                 if let result = searchResults?.first(where: { $0.id == selectedResultId }) {
                     showPopover = true
                     selectedResult = result
@@ -594,17 +585,17 @@ struct SearchResultTableView: View {
                 Button("Copy LLM Prompt") {
                     let allText = searchResults?.map { "\($0.text)\nSOURCES: \($0.metadata["source"] ?? "")" }.joined(separator: "\n") ?? ""
                     let prompt =
-                    """
-                    Given the following extracted parts of a long document and a question, create a final answer with references ("SOURCES").
-                    If you don't know the answer, just say that you don't know. Don't try to make up an answer.
-                    ALWAYS return a "SOURCES" part in your answer.
+                        """
+                        Given the following extracted parts of a long document and a question, create a final answer with references ("SOURCES").
+                        If you don't know the answer, just say that you don't know. Don't try to make up an answer.
+                        ALWAYS return a "SOURCES" part in your answer.
 
-                    QUESTION: \(searchQuery)
-                    =========
-                    \(allText)
-                    =========
-                    FINAL ANSWER:
-                    """
+                        QUESTION: \(searchQuery)
+                        =========
+                        \(allText)
+                        =========
+                        FINAL ANSWER:
+                        """
                     let pasteboard = NSPasteboard.general
                     pasteboard.declareTypes([.string], owner: nil)
                     pasteboard.setString(prompt, forType: .string)
@@ -615,9 +606,7 @@ struct SearchResultTableView: View {
     }
 }
 
-
-
-//struct FolderSelectionButton: View {
+// struct FolderSelectionButton: View {
 //    @Binding var folderURL: URL?
 //    @Binding var folderContents: [URL]
 //
@@ -647,15 +636,15 @@ struct SearchResultTableView: View {
 //            print("Error fetching folder contents: \(error)")
 //        }
 //    }
-//}
+// }
 //
-//enum EmbeddingStatus {
+// enum EmbeddingStatus {
 //    case idle
 //    case generating
 //    case completed
-//}
+// }
 //
-//class EmbeddingManager: ObservableObject {
+// class EmbeddingManager: ObservableObject {
 //    @Published var status: EmbeddingStatus = .idle
 //    @Published var progress: Double = 0.0
 //
@@ -672,9 +661,9 @@ struct SearchResultTableView: View {
 //            }
 //        }
 //    }
-//}
+// }
 //
-//struct ListItem: View {
+// struct ListItem: View {
 //    let item: URL
 //    @StateObject private var embeddingManager = EmbeddingManager()
 //
@@ -696,7 +685,7 @@ struct SearchResultTableView: View {
 //            }
 //        }
 //    }
-//}
+// }
 
 struct SimilaritySearchExampleSwiftUIView_Previews: PreviewProvider {
     static var previews: some View {

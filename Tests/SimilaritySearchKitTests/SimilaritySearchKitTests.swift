@@ -14,7 +14,6 @@ import CoreML
 
 @available(macOS 13.0, *)
 class SimilaritySearchKitTests: XCTestCase {
-
     func testSavingIndex() async {
         let similarityIndex = await SimilarityIndex(model: DistilbertEmbeddings(), vectorStore: JsonStore())
 
@@ -40,7 +39,5 @@ class SimilaritySearchKitTests: XCTestCase {
 
         XCTAssertNotNil(loadedItems)
         XCTAssertEqual(similarityIndex.indexItems.count, similarityIndex2.indexItems.count)
-
-
     }
 }

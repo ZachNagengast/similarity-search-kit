@@ -1,6 +1,6 @@
 //
 //  MiniLMMultiQAEmbeddings.swift
-//  
+//
 //
 //  Created by Zach Nagengast on 4/24/23.
 //
@@ -21,15 +21,16 @@ public class MultiQAMiniLMEmbeddings: EmbeddingsProtocol {
         modelConfig.computeUnits = .all
 
         do {
-            model = try multi_qa_MiniLM_L6_cos_v1(configuration: modelConfig)
+            self.model = try multi_qa_MiniLM_L6_cos_v1(configuration: modelConfig)
         } catch {
             fatalError("Failed to load the Core ML model. Error: \(error.localizedDescription)")
         }
 
-        tokenizer = BertTokenizer()
+        self.tokenizer = BertTokenizer()
     }
 
     // MARK: - Dense Embeddings
+
     public func encode(sentence: String) async -> [Float]? {
         // Encode input text as bert tokens
         let inputTokens = tokenizer.buildModelTokens(sentence: sentence)
@@ -47,7 +48,7 @@ public class MultiQAMiniLMEmbeddings: EmbeddingsProtocol {
         let output = try? model.prediction(input: inputFeatures)
 
         guard let embeddings = output?.embeddings,
-              embeddings.dataType == .float16 else {
+            embeddings.dataType == .float16 else {
             return nil
         }
 

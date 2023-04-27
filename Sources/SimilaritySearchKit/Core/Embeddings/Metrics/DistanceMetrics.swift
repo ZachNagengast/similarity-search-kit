@@ -81,7 +81,7 @@ public struct EuclideanDistance: DistanceMetricProtocol {
 /// - Returns: An array of tuples containing the top K scores and their corresponding indices.
 public func sortedScores(scores: [Float], topK: Int) -> [(Float, Int)] {
     // Combine indices & scores
-    let indexedScores = scores.enumerated().map { (index, score) in (score, index) }
+    let indexedScores = scores.enumerated().map { index, score in (score, index) }
 
     // Sort by decreasing score
     let sortedIndexedScores = indexedScores.sorted { $0.0 > $1.0 }
@@ -100,7 +100,7 @@ public func sortedScores(scores: [Float], topK: Int) -> [(Float, Int)] {
 /// - Returns: An array of tuples containing the top K distances and their corresponding indices.
 public func sortedDistances(distances: [Float], topK: Int) -> [(Float, Int)] {
     // Combine indices & distances
-    let indexedDistances = distances.enumerated().map { (index, score) in (score, index) }
+    let indexedDistances = distances.enumerated().map { index, score in (score, index) }
 
     // Sort by increasing distance
     let sortedIndexedDistances = indexedDistances.sorted { $0.0 < $1.0 }

@@ -1,6 +1,6 @@
 //
 //  MiniLMAllEmbeddings.swift
-//  
+//
 //
 //  Created by Zach Nagengast on 4/20/23.
 //
@@ -21,20 +21,21 @@ public class MiniLMEmbeddings: EmbeddingsProtocol {
         modelConfig.computeUnits = .all
 
         do {
-            model = try all_MiniLM_L6_v2(configuration: modelConfig)
+            self.model = try all_MiniLM_L6_v2(configuration: modelConfig)
         } catch {
             fatalError("Failed to load the Core ML model. Error: \(error.localizedDescription)")
         }
 
-        tokenizer = BertTokenizer()
+        self.tokenizer = BertTokenizer()
     }
 
     // MARK: - Dense Embeddings
+
     public func encode(sentence: String) async -> [Float]? {
         // Encode input text as bert tokens
         let inputTokens = tokenizer.buildModelTokens(sentence: sentence)
         let (inputIds, attentionMask) = tokenizer.buildModelInputs(from: inputTokens)
-        
+
         // Send tokens through the MLModel
         let embeddings = generateEmbeddings(inputIds: inputIds, attentionMask: attentionMask)
 
@@ -47,7 +48,7 @@ public class MiniLMEmbeddings: EmbeddingsProtocol {
         let output = try? model.prediction(input: inputFeatures)
 
         guard let embeddings = output?.embeddings,
-              embeddings.dataType == .float16 else {
+            embeddings.dataType == .float16 else {
             return nil
         }
 

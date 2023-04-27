@@ -1,6 +1,6 @@
 //
 //  NativeEmbeddings.swift
-//  
+//
 //
 //  Created by Zach Nagengast on 4/12/23.
 //
@@ -14,7 +14,7 @@ public class NativeEmbeddings: EmbeddingsProtocol {
     public let tokenizer: any TokenizerProtocol
 
     public init() {
-        tokenizer = NativeTokenizer()
+        self.tokenizer = NativeTokenizer()
     }
 
     // MARK: - Dense Embeddings
@@ -39,6 +39,7 @@ public class NativeEmbeddings: EmbeddingsProtocol {
     }
 
     // MARK: - Sparse Embeddings
+
     public class func encodeSparse(sentences: [String]) -> [[(index: Int, value: Double)]]? {
         let k1: Double = 1.5
         let b: Double = 0.75
@@ -50,12 +51,12 @@ public class NativeEmbeddings: EmbeddingsProtocol {
         let tokenizedSentences = sentences.map { tokenize(sentence: $0, wordEmbedding: wordEmbedding) }
         let vocabulary = createVocabulary(from: tokenizedSentences)
         let idf = computeIDF(vocabulary: vocabulary, sentences: tokenizedSentences)
-        let avgDocLength = Double(tokenizedSentences.reduce(0, { $0 + $1.count })) / Double(tokenizedSentences.count)
+        let avgDocLength = Double(tokenizedSentences.reduce(0) { $0 + $1.count }) / Double(tokenizedSentences.count)
         let embeddings = computeBM25(tokenizedSentences: tokenizedSentences, vocabulary: vocabulary, idf: idf, avgDocLength: avgDocLength, k1: k1, b: b)
         return embeddings
     }
 
-    class func tokenize(sentence: String, wordEmbedding: NLEmbedding) -> [String] {
+    class func tokenize(sentence: String, wordEmbedding _: NLEmbedding) -> [String] {
         let tokenizer = NLTokenizer(unit: .word)
         tokenizer.string = sentence
         return tokenizer.tokens(for: sentence.startIndex..<sentence.endIndex).map { String(sentence[$0]) }
@@ -75,7 +76,7 @@ public class NativeEmbeddings: EmbeddingsProtocol {
         var idf: [String: Double] = [:]
         let numDocs = Double(sentences.count)
         for word in vocabulary {
-            let numDocsWithWord = Double(sentences.filter({ $0.contains(word) }).count)
+            let numDocsWithWord = Double(sentences.filter { $0.contains(word) }.count)
             idf[word] = log((numDocs - numDocsWithWord + 0.5) / (numDocsWithWord + 0.5))
         }
         return idf
@@ -86,7 +87,7 @@ public class NativeEmbeddings: EmbeddingsProtocol {
         for sentence in tokenizedSentences {
             var sparseVector: [(index: Int, value: Double)] = []
             for (index, word) in vocabulary.enumerated() {
-                let tf = Double(sentence.filter({ $0 == word }).count)
+                let tf = Double(sentence.filter { $0 == word }.count)
                 let docLength = Double(sentence.count)
                 let bm25 = idf[word]! * ((tf * (k1 + 1)) / (tf + k1 * (1 - b + b * (docLength / avgDocLength))))
                 if bm25 != 0 {
@@ -98,4 +99,3 @@ public class NativeEmbeddings: EmbeddingsProtocol {
         return embeddings
     }
 }
-

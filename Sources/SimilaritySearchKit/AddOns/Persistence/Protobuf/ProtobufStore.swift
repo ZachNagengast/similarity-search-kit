@@ -6,17 +6,17 @@
 //
 
 import Foundation
-//TODO: import SwiftProtobuf
+// TODO: import SwiftProtobuf
 
-//let basePath = "/path/to/your/storage"
-//let indexPath = "\(basePath)/chunk_index.json"
+// let basePath = "/path/to/your/storage"
+// let indexPath = "\(basePath)/chunk_index.json"
 //
-//struct VectorIndex: Codable {
+// struct VectorIndex: Codable {
 //    var id: String
 //    var collectionFile: String
-//}
+// }
 //
-//func store(vectors: [Vector], collectionSize: Int) {
+// func store(vectors: [Vector], collectionSize: Int) {
 //    var collectionIndex = 0
 //    var index: [VectorIndex] = []
 //
@@ -46,9 +46,9 @@ import Foundation
 //    if let indexData = try? encoder.encode(index) {
 //        try? indexData.write(to: URL(fileURLWithPath: indexPath))
 //    }
-//}
+// }
 //
-//func loadChunk(withId id: String) -> Chunk? {
+// func loadChunk(withId id: String) -> Chunk? {
 //    guard let indexData = try? Data(contentsOf: URL(fileURLWithPath: indexPath)) else {
 //        return nil
 //    }
@@ -69,4 +69,4 @@ import Foundation
 //
 //    let batch = try! Batch(serializedData: batchData)
 //    return batch.chunks.first(where: { $0.id == id })
-//}
+// }

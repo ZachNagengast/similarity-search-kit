@@ -1,6 +1,6 @@
 //
 //  MSMarcoFixture.swift
-//  
+//
 //
 //  Created by Zach Nagengast on 4/13/23.
 //
@@ -22,7 +22,7 @@ struct PassageData: Codable {
         case query
         case queryId = "query_id"
         case queryType = "query_type"
-        case wellFormedAnswers = "wellFormedAnswers"
+        case wellFormedAnswers
     }
 }
 
@@ -57,10 +57,9 @@ func decodeJson(data: Data) -> [PassageData]? {
     }
 }
 
-
 struct MSMarco {
     static let passages: [Passages] = {
-        var jsonData: Data? = nil
+        var jsonData: Data?
 
         let bundle = Bundle.module
         if let jsonUrl = bundle.url(forResource: "ms_marco_validation_v2.1_subset", withExtension: "json") {
@@ -114,5 +113,4 @@ struct MSMarco {
 
         return comparisons
     }()
-
 }

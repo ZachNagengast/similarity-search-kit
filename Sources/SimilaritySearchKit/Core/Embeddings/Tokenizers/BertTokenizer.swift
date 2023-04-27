@@ -1,6 +1,6 @@
 //
 //  BertTokenizer.swift
-//  
+//
 //
 //  Created by Zach Nagengast on 4/20/23.
 //
@@ -121,11 +121,9 @@ public class BertTokenizer: TokenizerProtocol {
     }
 }
 
-
-
 class BasicTokenizer {
     let neverSplit = [
-        "[UNK]", "[SEP]", "[PAD]", "[CLS]", "[MASK]"
+        "[UNK]", "[SEP]", "[PAD]", "[CLS]", "[MASK]",
     ]
 
     func tokenize(text: String) -> [String] {
@@ -163,7 +161,6 @@ class BasicTokenizer {
     }
 }
 
-
 class WordpieceTokenizer {
     private let unkToken = "[UNK]"
     private let maxInputCharsPerWord = 100
@@ -188,7 +185,7 @@ class WordpieceTokenizer {
 
         while start < word.count {
             var end = word.count
-            var currentSubstring: String? = nil
+            var currentSubstring: String?
 
             while start < end {
                 var substring = Utils.substr(word, start..<end)!
@@ -223,13 +220,12 @@ class WordpieceTokenizer {
     }
 }
 
-
 struct Utils {
     /// Time a block in ms
     static func time<T>(label: String, _ block: () -> T) -> T {
         let startTime = CFAbsoluteTimeGetCurrent()
         let result = block()
-        let diff = (CFAbsoluteTimeGetCurrent() - startTime) * 1_000
+        let diff = (CFAbsoluteTimeGetCurrent() - startTime) * 1000
         print("[\(label)] \(diff)ms")
         return result
     }
@@ -271,7 +267,7 @@ struct Utils {
     }
 
     /// Invert a (k, v) dictionary
-    static func invert<K, V>(_ dict: Dictionary<K, V>) -> Dictionary<V, K> {
+    static func invert<K, V>(_ dict: [K: V]) -> [V: K] {
         var inverted: [V: K] = [:]
         for (k, v) in dict {
             inverted[v] = k
@@ -279,7 +275,6 @@ struct Utils {
         return inverted
     }
 }
-
 
 extension MLMultiArray {
     /// All values will be stored in the last dimension of the MLMultiArray (default is dims=1)

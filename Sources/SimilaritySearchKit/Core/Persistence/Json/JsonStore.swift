@@ -1,6 +1,6 @@
 //
 //  JsonStore.swift
-//  
+//
 //
 //  Created by Zach Nagengast on 4/26/23.
 //
