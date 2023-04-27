@@ -130,6 +130,15 @@ func findNearest(for queryEmbedding: [Float], in neighborEmbeddings: [[Float]], 
 
 ### VectorStoreProtocol
 
+Save and load index items. The default implementation uses JSON files, but this can be overriden to use any storage mechanism.
+```
+
+```swift
+func saveIndex(items: [IndexItem], to url: URL, as name: String) throws -> URL
+func loadIndex(from url: URL) throws -> [IndexItem]
+func listIndexes(at url: URL) -> [URL]
+```
+
 
 ## Acknowledgements
 
