@@ -1,0 +1,10 @@
+{
+  "MLModelVersionStringKey" : "--",
+  "MLModelDescriptionKey" : "This is a sentence-transformers model: It maps sentences & paragraphs to a 384 dimensional dense vector space and was designed for semantic search. It has been trained on 215M (question, answer) pairs from diverse sources.",
+  "MLModelCreatorDefinedKey" : {
+    "com.github.apple.coremltools.version" : "6.3.0",
+    "com.github.apple.coremltools.source" : "torch==2.0.0"
+  },
+  "MLModelAuthorKey" : "See: https:\/\/huggingface.co\/sentence-transformers\/multi-qa-MiniLM-L6-cos-v1",
+  "MLModelLicenseKey" : "Apache 2.0"
+}

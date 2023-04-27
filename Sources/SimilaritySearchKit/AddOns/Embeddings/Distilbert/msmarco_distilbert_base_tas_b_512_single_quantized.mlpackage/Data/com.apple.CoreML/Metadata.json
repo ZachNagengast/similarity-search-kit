@@ -1,0 +1,9 @@
+{
+  "MLModelDescriptionKey" : "This is a port of the DistilBert TAS-B Model to sentence-transformers model: It maps sentences & paragraphs to a 768 dimensional dense vector space and is optimized for the task of semantic search.",
+  "MLModelCreatorDefinedKey" : {
+    "com.github.apple.coremltools.version" : "6.3.0",
+    "com.github.apple.coremltools.source" : "torch==2.0.0"
+  },
+  "MLModelAuthorKey" : "See: https:\/\/huggingface.co\/sentence-transformers\/msmarco-distilbert-base-tas-b",
+  "MLModelLicenseKey" : "Apache 2.0 https:\/\/github.com\/sebastian-hofstaetter\/tas-balanced-dense-retrieval\/blob\/main\/LICENSE"
+}

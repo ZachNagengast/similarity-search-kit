@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+message Vector {
+  string id = 1;
+  string text = 2;
+  string metadata = 3;
+}
+
+message Collection {
+  repeated Vector vector = 1;
+}
