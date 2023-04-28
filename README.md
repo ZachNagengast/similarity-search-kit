@@ -1,3 +1,6 @@
+
+![License](https://img.shields.io/github/license/ZachNagengast/similarity-search-kit)
+
 # SimilaritySearchKit
 
 ![ssk-logo](https://user-images.githubusercontent.com/1981179/234468591-cda2871d-cb29-4b3e-bef4-77e0702123e1.png)
@@ -14,10 +17,6 @@
 <img src="https://user-images.githubusercontent.com/1981179/234986166-e48a543b-2d11-4a78-9fc8-d348c3d436b4.gif">
 </details>
 
-## Motivation
-
-This project was inspired by the rapid expansion in NLP services and applications with the advent of ChatGPT. While these services have empowered a broad spectrum of powerful text-based applications, they also pose significant privacy concerns. Specifically, many "Chat with X" services require users to upload their data to remote servers for processing and storage. Although this may be an acceptable trade-off for some, it is less ideal for those handling confidential or sensitive information. With this in mind, **SimilaritySearchKit** aims to provide a robust, local-first solution that enables developers to create state-of-the-art  NLP applications within the Apple ecosystem without compromising user privacy.
-
 ## Use Cases
 
 Some potential use cases for **SimilaritySearchKit** include:
@@ -28,14 +27,14 @@ Some potential use cases for **SimilaritySearchKit** include:
 
 - **Question-answering systems:** Implement a question-answering system that finds the most relevant answers to a user's query within a local dataset.
 
-By leveraging **SimilaritySearchKit**, developers can easily create powerful applications that prioritize user privacy without major tradeoffs in functionality or performance.
+By leveraging **SimilaritySearchKit**, developers can easily create powerful applications that prioritize keeping data close to home without major tradeoffs in functionality or performance.
 
 ## Installation
 
 To install **SimilaritySearchKit**, simply add it as a dependency to your Swift project using the Swift Package Manager. Add the following line to your dependencies array in your Package.swift file:
 
 ```swift
-.package(url: "https://github.com/ZachNagengast/SimilaritySearchKit.git", from: "0.0.1")
+.package(url: "https://github.com/ZachNagengast/similarity-search-kit.git", from: "0.0.1")
 ```
 
 Then, add the appropriate target dependency to the desired target:
@@ -153,6 +152,11 @@ Many parts of this project were derived from the existing code, either already i
 - Chroma https://github.com/chroma-core/chroma
 - Pinecone https://github.com/pinecone-io/examples
 - OpenAI Plugins https://github.com/openai/chatgpt-retrieval-plugin
+
+
+## Motivation
+
+This project has been inspired by the incredible advancements in natural language services and applications that have come about with the emergence of ChatGPT. While these services have unlocked a whole new world of powerful text-based applications, they often rely on cloud services. Specifically, many "Chat with Data" services necessitate users to upload their data to remote servers for processing and storage. Although this works for some, it might not be the best fit for those in low connectivity environments, or handling confidential or sensitive information. With this in mind, **SimilaritySearchKit** aims to provide a robust, local-first solution that enables developers to create state-of-the-art NLP applications within the Apple ecosystem.
 
 ## Future Work
 
