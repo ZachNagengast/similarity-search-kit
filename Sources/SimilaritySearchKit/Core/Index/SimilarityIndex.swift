@@ -16,7 +16,7 @@ public typealias SimilarityMetricType = SimilarityIndex.SimilarityMetricType
 public typealias TextSplitterType = SimilarityIndex.TextSplitterType
 public typealias VectorStoreType = SimilarityIndex.VectorStoreType
 
-@available(macOS 13.0, iOS 16.0, *)
+@available(macOS 12.0, iOS 15.0, *)
 public class SimilarityIndex {
     // MARK: - Properties
 
@@ -30,9 +30,9 @@ public class SimilarityIndex {
     /// The name of the index.
     public var indexName: String
 
-    private let indexModel: any EmbeddingsProtocol
-    private var indexMetric: any DistanceMetricProtocol
-    private let vectorStore: any VectorStoreProtocol
+    public let indexModel: any EmbeddingsProtocol
+    public var indexMetric: any DistanceMetricProtocol
+    public let vectorStore: any VectorStoreProtocol
 
     /// An object representing an item in the index.
     public struct IndexItem: Codable {
@@ -170,11 +170,40 @@ public class SimilarityIndex {
             }
         }
     }
+
+    public class func combinedResultsString(_ results: [SearchResult]) -> String {
+        let combinedResults = results.map { result -> String in
+            let metadataString = result.metadata.map { key, value in
+                "\(key.uppercased()): \(value)"
+            }.joined(separator: "\n")
+
+            return "\(result.text)\n\(metadataString)"
+        }.joined(separator: "\n\n")
+
+        return combinedResults
+    }
+
+    public class func exportLLMPrompt(query: String, results: [SearchResult]) -> String {
+        let sourcesText = combinedResultsString(results)
+        let prompt =
+            """
+            Given the following extracted parts of a long document and a question, create a final answer with references ("SOURCES").
+            If you don't know the answer, just say that you don't know. Don't try to make up an answer.
+            ALWAYS return a "SOURCES" part in your answer.
+
+            QUESTION: \(query)
+            =========
+            \(sourcesText)
+            =========
+            FINAL ANSWER:
+            """
+        return prompt
+    }
 }
 
 // MARK: - CRUD
 
-@available(macOS 13.0, iOS 16.0, *)
+@available(macOS 12.0, iOS 15.0, *)
 extension SimilarityIndex {
     // MARK: Create
 
@@ -186,7 +215,7 @@ extension SimilarityIndex {
         indexItems.append(item)
     }
 
-    public func addItems(ids: [UUID], texts: [String], metadata: [[String: String]], embeddings: [[Float]?]? = nil, onProgress: ((String) -> Void)? = nil) async {
+    public func addItems(ids: [String], texts: [String], metadata: [[String: String]], embeddings: [[Float]?]? = nil, onProgress: ((String) -> Void)? = nil) async {
         // Check if all input arrays have the same length
         guard ids.count == texts.count, texts.count == metadata.count else {
             fatalError("Input arrays must have the same length.")
@@ -198,7 +227,7 @@ extension SimilarityIndex {
 
         await withTaskGroup(of: Void.self) { taskGroup in
             for i in 0..<ids.count {
-                let id = ids[i].uuidString
+                let id = ids[i]
                 let text = texts[i]
                 let embedding = embeddings?[i]
                 let meta = metadata[i]

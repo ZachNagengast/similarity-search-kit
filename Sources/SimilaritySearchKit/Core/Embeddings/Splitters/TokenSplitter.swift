@@ -17,13 +17,13 @@ public class TokenSplitter: TextSplitterProtocol {
         self.tokenizer = withTokenizer
     }
 
-    public func split(text: String, chunkSize: Int? = 510, overlapSize _: Int? = 0) -> ([String], [[String]]?) {
+    public func split(text: String, chunkSize: Int = 510, overlapSize _: Int = 0) -> ([String], [[String]]?) {
         // Return an empty list if the text is empty or whitespace
         if text.isEmpty || text.trimmingCharacters(in: .whitespaces).isEmpty {
             return ([], [])
         }
 
-        let chunkSize = min(chunkSize!, 510)
+        let chunkSize = min(chunkSize, 510)
 
         // Tokenize the text
         let tokens = tokenizer.tokenize(text: text)

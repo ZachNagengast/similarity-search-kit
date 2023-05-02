@@ -9,7 +9,7 @@ import Foundation
 import CoreML
 import SimilaritySearchKit
 
-@available(macOS 13.0, iOS 16.0, *)
+@available(macOS 12.0, iOS 15.0, *)
 public class MultiQAMiniLMEmbeddings: EmbeddingsProtocol {
     public let model: multi_qa_MiniLM_L6_cos_v1
     public let tokenizer: BertTokenizer
@@ -47,8 +47,7 @@ public class MultiQAMiniLMEmbeddings: EmbeddingsProtocol {
 
         let output = try? model.prediction(input: inputFeatures)
 
-        guard let embeddings = output?.embeddings,
-            embeddings.dataType == .float16 else {
+        guard let embeddings = output?.embeddings else {
             return nil
         }
 

@@ -16,11 +16,7 @@ public class CharacterSplitter: TextSplitterProtocol {
     }
 
     // Split chunks based on seperator, append until the chunk size is reached
-    public func split(text: String, chunkSize: Int?, overlapSize: Int?) -> ([String], [[String]]?) {
-        guard let chunkSize = chunkSize, let overlapSize = overlapSize else {
-            return ([], [])
-        }
-
+    public func split(text: String, chunkSize: Int = 100, overlapSize: Int = 0) -> ([String], [[String]]?) {
         let components = text.components(separatedBy: separator)
         var chunks: [String] = []
         var currentChunk: [String] = []

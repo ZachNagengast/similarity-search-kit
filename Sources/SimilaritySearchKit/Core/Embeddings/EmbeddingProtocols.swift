@@ -12,7 +12,7 @@ import Combine
 
 /// A protocol for embedding models that can generate vector representations of text.
 /// Implement this protocol to support different models for encoding text into vectors.
-@available(macOS 13.0, iOS 16.0, *)
+@available(macOS 12.0, iOS 15.0, *)
 public protocol EmbeddingsProtocol {
     /// The associated tokenizer type for the embedding model.
     associatedtype TokenizerType
@@ -63,7 +63,7 @@ public protocol TextSplitterProtocol {
     ///   - chunkSize: The number of tokens per chunk.
     ///   - overlapSize: The number of overlapping tokens between consecutive chunks.
     /// - Returns: A tuple containing an array of chunked text and an optional array of token ids.
-    func split(text: String, chunkSize: Int?, overlapSize: Int?) -> ([String], [[String]]?)
+    func split(text: String, chunkSize: Int, overlapSize: Int) -> ([String], [[String]]?)
 }
 
 public protocol TokenizerProtocol {

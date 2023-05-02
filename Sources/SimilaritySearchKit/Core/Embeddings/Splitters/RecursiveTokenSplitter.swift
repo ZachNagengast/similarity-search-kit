@@ -17,10 +17,10 @@ public class RecursiveTokenSplitter: TextSplitterProtocol {
         self.tokenizer = withTokenizer
     }
 
-    public func split(text: String, chunkSize: Int? = 510, overlapSize _: Int? = 0) -> ([String], [[String]]?) {
+    public func split(text: String, chunkSize: Int = 510, overlapSize _: Int = 0) -> ([String], [[String]]?) {
         let separators = ["\n\n", "\n", ".", " ", ""]
 
-        let chunkSize = min(chunkSize!, 510) // Account for [CLS] and [SEP] tokens
+        let chunkSize = min(chunkSize, 510) // Account for [CLS] and [SEP] tokens
 
         for separator in separators {
             let splits = text.components(separatedBy: separator)

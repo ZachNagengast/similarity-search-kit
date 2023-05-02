@@ -6,8 +6,8 @@ import PackageDescription
 let package = Package(
     name: "SimilaritySearchKit",
     platforms: [
-        .macOS(.v13),
-        .iOS(.v16),
+        .macOS(.v12),
+        .iOS(.v15),
     ],
     products: [
         .library(
@@ -37,7 +37,11 @@ let package = Package(
         .target(
             name: "SimilaritySearchKitDistilbert",
             dependencies: ["SimilaritySearchKit"],
-            path: "Sources/SimilaritySearchKit/AddOns/Embeddings/Distilbert"
+            path: "Sources/SimilaritySearchKit/AddOns/Embeddings/Distilbert",
+            swiftSettings: [
+                .unsafeFlags(["-Xfrontend", "-target", "x86_64-apple-ios16.0-macabi"], .when(platforms: [.iOS])),
+                .unsafeFlags(["-Xfrontend", "-target", "x86_64-apple-macosx13.0"], .when(platforms: [.macOS])),
+            ]
         ),
         .target(
             name: "SimilaritySearchKitMiniLMAll",

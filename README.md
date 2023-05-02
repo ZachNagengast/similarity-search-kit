@@ -5,17 +5,9 @@
 
 ![ssk-logo](https://user-images.githubusercontent.com/1981179/234468591-cda2871d-cb29-4b3e-bef4-77e0702123e1.png)
 
-**SimilaritySearchKit** is a Swift package providing *local-first* text embeddings and semantic search functionality for iOS and macOS applications. Emphasizing speed, flexibility, and privacy, it supports a variety of built-in distance metrics and metal-accelerated machine learning models, in addition to seamless integration with bring-your-own options.
+**SimilaritySearchKit** is a Swift package enabling *on-device* text embeddings and semantic search functionality for iOS and macOS applications in just a few lines. Emphasizing speed, extensibility, and privacy, it supports a variety of built-in state-of-the-art NLP models and similarity metrics, in addition to seamless integration for bring-your-own options.
 
-<details>
-<summary>Chat with Files Example Video</summary>
-<img src="https://user-images.githubusercontent.com/1981179/234986127-8fa5daac-d041-4f1e-b7e5-175ff49271bb.gif">
-</details>
-
-<details>
-<summary>iOS Basic Example Video</summary>
-<img src="https://user-images.githubusercontent.com/1981179/234986166-e48a543b-2d11-4a78-9fc8-d348c3d436b4.gif">
-</details>
+[![Chat With Files Example](https://user-images.githubusercontent.com/1981179/235818327-05ed993d-1faf-4023-a3bb-6ef3f0440cc4.gif)](https://youtu.be/yYfQX4QdNJI)
 
 ## Use Cases
 
@@ -23,22 +15,22 @@ Some potential use cases for **SimilaritySearchKit** include:
 
 - **Privacy-focused document search engines:** Create a search engine that processes sensitive documents locally, without exposing user data to external services. (See example project "ChatWithFiles" in the `Examples` directory.)
 
-- **Document clustering and organization:** Automatically group and organize documents based on their textual content, all on-device.
+- **Offline question-answering systems:** Implement a question-answering system that finds the most relevant answers to a user's query within a local dataset.
 
-- **Question-answering systems:** Implement a question-answering system that finds the most relevant answers to a user's query within a local dataset.
+- **Document clustering and recommendation engines:** Automatically group and organize documents based on their textual content on the edge.
 
-By leveraging **SimilaritySearchKit**, developers can easily create powerful applications that prioritize keeping data close to home without major tradeoffs in functionality or performance.
+
+By leveraging **SimilaritySearchKit**, developers can easily create powerful applications that keep data close to home without major tradeoffs in functionality or performance.
 
 ## Installation
 
 To install **SimilaritySearchKit**, simply add it as a dependency to your Swift project using the Swift Package Manager. I recommend using the Xcode method personally via:
 
-`File -> Add Packages... -> Search or Enter Package Url -> https://github.com/ZachNagengast/similarity-search-kit.git` 
+`File` → `Add Packages...` → `Search or Enter Package Url` → `https://github.com/ZachNagengast/similarity-search-kit.git`
 
-It should give you the following options to choose which model you'd like to add:
+Xcode should give you the following options to choose which model you'd like to add (see [available models](#available-models) below for help choosing):
 
 ![Xcode Swift Package Manager Import](https://user-images.githubusercontent.com/1981179/235577729-eae29187-8d3b-40cb-b7d7-f6470a80b141.png)
-
 
 If you want to add it via `Package.swift`, add the following line to your dependencies array:
 
@@ -59,51 +51,13 @@ Then, add the appropriate target dependency to the desired target:
 
 If you only want to use a subset of the available models, you can omit the corresponding dependency. This will reduce the size of your final binary.
 
-## Usage
-
-To use SimilaritySearchKit in your project, first import the framework:
-
-```swift
-import SimilaritySearchKit
-```
-
-Next, create an instance of SimilarityIndex with your desired distance metric and [embedding model](#available-models) (see below for options):
-
-```swift
-let similarityIndex = await SimilarityIndex(
-    model: NativeEmbeddings(),
-    metric: CosineSimilarity()
-)
-```
-
-Then, add your text that you want to make searchable to the index:
-
-```swift
-await similarityIndex.addItem(
-    id: "id1", 
-    text: "Metal was released in June 2014.", 
-    metadata: ["source": "example.pdf"]
-)
-```
-
-Finally, query the index for the most similar items to a given query:
-
-```swift
-let results = await similarityIndex.search("When was metal released?")
-print(results)
-```
-
-Which outputs a **SearchResult** array:
-
-`[SearchResult(id: "id1", score: 0.86216, metadata: ["source": "example.pdf"])]`
-
 ## Available Models
 
 | Model | Use Case | Size | Source |
 | --- | --- | --- | --- |
 | `NaturalLanguage` | Text similarity, faster inference | Built-in | [Apple](https://developer.apple.com/documentation/naturallanguage/nlembedding) |
 | `MiniLMAll` | Text similarity, fastest inference | 46 MB | [HuggingFace](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2) |
-| `Distilbert` | Q&A search, high accuracy | 86 MB (quantized) | [HuggingFace](https://huggingface.co/msmarco-distilbert-base-tas-b) |
+| `Distilbert` | Q&A search, highest accuracy | 86 MB (quantized) | [HuggingFace](https://huggingface.co/sentence-transformers/msmarco-distilbert-base-tas-b) |
 | `MiniLMMultiQA` | Q&A search, fastest inference | 46 MB | [HuggingFace](https://huggingface.co/sentence-transformers/multi-qa-MiniLM-L6-cos-v1) |
 
 Models conform the the `EmbeddingProtocol` and can be used interchangeably with the `SimilarityIndex` class.
@@ -115,7 +69,6 @@ Models conform the the `EmbeddingProtocol` and can be used interchangeably with 
 | `DotProduct` | Measures the similarity between two vectors as the product of their magnitudes |
 | `CostineSimilarity` | Calculates similarity by measuring the cosine of the angle between two vectors |
 | `EuclideanDistance` | Computes the straight-line distance between two points in Euclidean space |
-| `NLDistance` | Built-in cosine similarity |
 
 Metrics conform to the `DistanceMetricProtocol` and can be used interchangeably with the `SimilarityIndex` class.
 
@@ -137,6 +90,23 @@ Accepts a query embedding vector and a list of embeddings vectors and returns a 
 
 ```swift
 func findNearest(for queryEmbedding: [Float], in neighborEmbeddings: [[Float]], resultsCount: Int) -> [(Float, Int)]
+```
+
+### TextSplitterProtocol
+
+Splits a string into chunks of a given size, with a given overlap. This is useful for splitting long documents into smaller chunks for embedding. It returns the list of chunks and an optional list of tokensIds for each chunk.
+
+```swift
+func split(text: String, chunkSize: Int, overlapSize: Int) -> ([String], [[String]]?)
+```
+
+### TokenizerProtocol
+
+Tokenizes and detokenizes text. Use this for custom models that use different tokenizers than are available in the current list.
+
+```swift
+func tokenize(text: String) -> [String]
+func detokenize(tokens: [String]) -> String
 ```
 
 ### VectorStoreProtocol
@@ -165,7 +135,7 @@ Many parts of this project were derived from the existing code, either already i
 
 ## Motivation
 
-This project has been inspired by the incredible advancements in natural language services and applications that have come about with the emergence of ChatGPT. While these services have unlocked a whole new world of powerful text-based applications, they often rely on cloud services. Specifically, many "Chat with Data" services necessitate users to upload their data to remote servers for processing and storage. Although this works for some, it might not be the best fit for those in low connectivity environments, or handling confidential or sensitive information. With this in mind, **SimilaritySearchKit** aims to provide a robust, local-first solution that enables developers to create state-of-the-art NLP applications within the Apple ecosystem.
+This project has been inspired by the incredible advancements in natural language services and applications that have come about with the emergence of ChatGPT. While these services have unlocked a whole new world of powerful text-based applications, they often rely on cloud services. Specifically, many "Chat with Data" services necessitate users to upload their data to remote servers for processing and storage. Although this works for some, it might not be the best fit for those in low connectivity environments, or handling confidential or sensitive information. While Apple does have bundled library `NaturalLanguage` for similar tasks, the CoreML model conversion process opens up a much wider array of models and use cases. With this in mind, **SimilaritySearchKit** aims to provide a robust, on-device solution that enables developers to create state-of-the-art NLP applications within the Apple ecosystem.
 
 ## Future Work
 

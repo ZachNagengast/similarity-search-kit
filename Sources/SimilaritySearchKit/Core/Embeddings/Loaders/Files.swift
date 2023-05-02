@@ -122,7 +122,7 @@ public class Files {
         return false
     }
 
-    private class func extractTextFromPDF(url: URL) -> String? {
+    public class func extractTextFromPDF(url: URL) -> String? {
         let pdfDocument = PDFDocument(url: url)
 
         guard let document = pdfDocument else {
