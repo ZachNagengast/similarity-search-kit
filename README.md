@@ -31,7 +31,16 @@ By leveraging **SimilaritySearchKit**, developers can easily create powerful app
 
 ## Installation
 
-To install **SimilaritySearchKit**, simply add it as a dependency to your Swift project using the Swift Package Manager. Add the following line to your dependencies array in your Package.swift file:
+To install **SimilaritySearchKit**, simply add it as a dependency to your Swift project using the Swift Package Manager. I recommend using the Xcode method personally via:
+
+`File -> Add Packages... -> Search or Enter Package Url -> https://github.com/ZachNagengast/similarity-search-kit.git` 
+
+It should give you the following options to choose which model you'd like to add:
+
+![Xcode Swift Package Manager Import](https://user-images.githubusercontent.com/1981179/235577729-eae29187-8d3b-40cb-b7d7-f6470a80b141.png)
+
+
+If you want to add it via `Package.swift`, add the following line to your dependencies array:
 
 ```swift
 .package(url: "https://github.com/ZachNagengast/similarity-search-kit.git", from: "0.0.1")
