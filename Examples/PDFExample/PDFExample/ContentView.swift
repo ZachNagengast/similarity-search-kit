@@ -160,6 +160,10 @@ struct ContentView: View {
                     }
                 }
             }
+
+            for (idx, chunk) in chunks.enumerated() {
+                await index.addItem(id: "id\(idx)", text: chunk, metadata: ["source": fileName], embedding: embeddings[idx])
+            }
         }
     }
 
@@ -167,10 +171,6 @@ struct ContentView: View {
         guard let index = similarityIndex else { return }
 
         Task {
-            for (idx, chunk) in chunks.enumerated() {
-                await index.addItem(id: "id\(idx)", text: chunk, metadata: ["source": fileName], embedding: embeddings[idx])
-            }
-
             let results = await index.search(searchText)
 
             searchResults = results.map { $0.text }

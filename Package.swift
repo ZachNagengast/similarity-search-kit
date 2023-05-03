@@ -1,4 +1,4 @@
-// swift-tools-version: 5.8
+// swift-tools-version: 5.7
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -6,8 +6,8 @@ import PackageDescription
 let package = Package(
     name: "SimilaritySearchKit",
     platforms: [
-        .macOS(.v12),
-        .iOS(.v15),
+        .macOS(.v13),
+        .iOS(.v16),
     ],
     products: [
         .library(
@@ -37,11 +37,7 @@ let package = Package(
         .target(
             name: "SimilaritySearchKitDistilbert",
             dependencies: ["SimilaritySearchKit"],
-            path: "Sources/SimilaritySearchKit/AddOns/Embeddings/Distilbert",
-            swiftSettings: [
-                .unsafeFlags(["-Xfrontend", "-target", "x86_64-apple-ios16.0-macabi"], .when(platforms: [.iOS])),
-                .unsafeFlags(["-Xfrontend", "-target", "x86_64-apple-macosx13.0"], .when(platforms: [.macOS])),
-            ]
+            path: "Sources/SimilaritySearchKit/AddOns/Embeddings/Distilbert"
         ),
         .target(
             name: "SimilaritySearchKitMiniLMAll",

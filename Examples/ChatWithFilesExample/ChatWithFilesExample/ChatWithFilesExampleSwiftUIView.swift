@@ -236,7 +236,6 @@ struct ChatWithFilesExampleSwiftUIView: View {
                 } else {
                     SearchResultTableView(searchResults: $searchResults, searchQuery: $searchQuery)
                 }
-
             }
 
             .frame(minWidth: 400)

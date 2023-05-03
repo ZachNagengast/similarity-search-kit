@@ -1,7 +1,8 @@
-
-![License](https://img.shields.io/github/license/ZachNagengast/similarity-search-kit)
-
 # SimilaritySearchKit
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FZachNagengast%2Fsimilarity-search-kit%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/ZachNagengast/similarity-search-kit)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FZachNagengast%2Fsimilarity-search-kit%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/ZachNagengast/similarity-search-kit)
+[![](https://img.shields.io/badge/Examples-yes-red)](#examples)
+![License](https://img.shields.io/github/license/ZachNagengast/similarity-search-kit?color=red)
 
 ![ssk-logo](https://user-images.githubusercontent.com/1981179/234468591-cda2871d-cb29-4b3e-bef4-77e0702123e1.png)
 
@@ -13,7 +14,7 @@
 
 Some potential use cases for **SimilaritySearchKit** include:
 
-- **Privacy-focused document search engines:** Create a search engine that processes sensitive documents locally, without exposing user data to external services. (See example project "ChatWithFiles" in the `Examples` directory.)
+- **Privacy-focused document search engines:** Create a search engine that processes sensitive documents locally, without exposing user data to external services. (See example project "ChatWithFilesExample" in the [Examples](#examples) directory.)
 
 - **Offline question-answering systems:** Implement a question-answering system that finds the most relevant answers to a user's query within a local dataset.
 
@@ -50,6 +51,45 @@ Then, add the appropriate target dependency to the desired target:
 ```
 
 If you only want to use a subset of the available models, you can omit the corresponding dependency. This will reduce the size of your final binary.
+
+## Usage
+To use SimilaritySearchKit in your project, first import the framework:
+```swift
+import SimilaritySearchKit
+```
+Next, create an instance of SimilarityIndex with your desired distance metric and [embedding model](#available-models) (see below for options):
+```swift
+let similarityIndex = await SimilarityIndex(
+    model: NativeEmbeddings(),
+    metric: CosineSimilarity()
+)
+```
+Then, add your text that you want to make searchable to the index:
+```swift
+await similarityIndex.addItem(
+    id: "id1", 
+    text: "Metal was released in June 2014.", 
+    metadata: ["source": "example.pdf"]
+)
+```
+Finally, query the index for the most similar items to a given query:
+```swift
+let results = await similarityIndex.search("When was metal released?")
+print(results)
+```
+Which outputs a **SearchResult** array:
+`[SearchResult(id: "id1", score: 0.86216, metadata: ["source": "example.pdf"])]`
+
+## Examples
+
+The `Examples` directory contains multple sample iOS and macOS applications that demonstrates how to use **SimilaritySearchKit** to it's fullest extent.
+
+| Example | Description | Requirements |
+| --- | --- | --- |
+| `BasicExample` | A basic multiplatform application that indexes and compares similarity of a small set of hardcoded strings. | iOS 16.0+, macOS 13.0+ |
+| `PDFExample` | A mac-catalyst application that enables semantic search on the contents of individual PDF files. | iOS 16.0+ |
+| `ChatWithFilesExample` | An advanced macOS application that indexes any/all text files on your computer. | macOS 13.0+ |
+
 
 ## Available Models
 

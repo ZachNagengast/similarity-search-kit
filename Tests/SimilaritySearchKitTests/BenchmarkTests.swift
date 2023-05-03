@@ -39,7 +39,7 @@ class BenchmarkTests: XCTestCase {
 
         let similarityIndex = await SimilarityIndex(model: DistilbertEmbeddings())
         await similarityIndex.addItems(
-            ids: [UUID()],
+            ids: [UUID().uuidString],
             texts: [searchPassage.text],
             metadata: [searchPassage.metadata]
         )
@@ -120,7 +120,7 @@ class BenchmarkTests: XCTestCase {
 
     func testDistilbertPerformanceSearch() async {
         let testAmount = 100
-        let passageIds = Array(0..<testAmount).map { _ in UUID() }
+        let passageIds = Array(0..<testAmount).map { _ in UUID().uuidString }
         let passageTexts = Array(MSMarco.passageTexts[0..<testAmount])
         let passageUrls = MSMarco.passageUrls[0..<testAmount].map { url in ["source": url] }
 
