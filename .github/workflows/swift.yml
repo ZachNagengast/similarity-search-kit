@@ -17,6 +17,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Run iOS tests
-      run: xcodebuild test -scheme SimilaritySearchKit-Package -destination "platform=iOS Simulator,name=$(xcrun simctl list devices available 'iOS' | grep -o 'iPhone.*' | tail -n 1)"
+      run: xcodebuild test -scheme SimilaritySearchKit-Package -destination 'generic/platform=iOS Simulator'
     - name: Run macOS tests
-      run: xcodebuild test -scheme SimilaritySearchKit-Package -destination 'generic/platform=macOS,arch=arm64,name=Any Mac'
+      run: xcodebuild test -scheme SimilaritySearchKit-Package -destination 'generic/platform=macOS'
