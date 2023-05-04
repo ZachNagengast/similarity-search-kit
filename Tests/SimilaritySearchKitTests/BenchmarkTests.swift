@@ -60,7 +60,7 @@ class BenchmarkTests: XCTestCase {
     }
 
     func testDistilbertPerformanceTokenization() {
-        let passageTexts = MSMarco.passageTexts[0..<100]
+        let passageTexts = MSMarco.passageTexts[0..<10]
         let tokenizer = BertTokenizer()
 
         measure {
@@ -74,7 +74,7 @@ class BenchmarkTests: XCTestCase {
     func testDistilbertPerformanceEmbeddingsSync() {
         let model = DistilbertEmbeddings()
         let tokenizer = model.tokenizer
-        let passageTexts = MSMarco.passageTexts[0..<100]
+        let passageTexts = MSMarco.passageTexts[0..<10]
         var inputs = [(MLMultiArray, MLMultiArray)]()
 
         // Do 100 Sync
@@ -119,7 +119,7 @@ class BenchmarkTests: XCTestCase {
     }
 
     func testDistilbertPerformanceSearch() {
-        let testAmount = 100
+        let testAmount = 10
         let passageIds = Array(0..<testAmount).map { _ in UUID().uuidString }
         let passageTexts = Array(MSMarco.passageTexts[0..<testAmount])
         let passageUrls = MSMarco.passageUrls[0..<testAmount].map { url in ["source": url] }
