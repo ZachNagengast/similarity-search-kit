@@ -17,6 +17,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Run iOS tests
-      run: xcodebuild test -scheme SimilaritySearchKit-Package -destination 'generic/platform=iOS Simulator'
+      run: xcodebuild test -scheme SimilaritySearchKit-Package -destination 'platform=iOS Simulator,name=iPhone 14 Pro Max,OS=latest'
     - name: Run macOS tests
-      run: xcodebuild test -scheme SimilaritySearchKit-Package -destination 'generic/platform=macOS'
+      run: xcodebuild test -scheme SimilaritySearchKit-Package -destination 'generic/platform=macOS,OS=latest'
