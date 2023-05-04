@@ -34,19 +34,19 @@ class BenchmarkTests: XCTestCase {
         XCTAssertEqual(embeddings, MSMarco.testPassage.embeddings)
     }
 
-    func testDistilbertSearch() async {
+    func testDistilbertSearch() {
         let searchPassage = MSMarco.testPassage
-
-        let similarityIndex = await SimilarityIndex(model: DistilbertEmbeddings())
-        await similarityIndex.addItems(
-            ids: [UUID().uuidString],
-            texts: [searchPassage.text],
-            metadata: [searchPassage.metadata]
-        )
 
         let expectation = XCTestExpectation(description: "Encoding passage texts")
 
         Task {
+            let similarityIndex = await SimilarityIndex(model: DistilbertEmbeddings())
+            await similarityIndex.addItems(
+                ids: [UUID().uuidString],
+                texts: [searchPassage.text],
+                metadata: [searchPassage.metadata]
+            )
+
             let top_k = await similarityIndex.search("test query")
             let searchResult: SimilarityIndex.SearchResult = top_k.first!
             XCTAssertEqual(searchResult.text, searchPassage.text)
@@ -56,7 +56,7 @@ class BenchmarkTests: XCTestCase {
             expectation.fulfill()
         }
 
-        await fulfillment(of: [expectation], timeout: 60)
+        wait(for: [expectation], timeout: 60)
     }
 
     func testDistilbertPerformanceTokenization() {
@@ -118,44 +118,44 @@ class BenchmarkTests: XCTestCase {
         wait(for: [expectation], timeout: 60.0)
     }
 
-    func testDistilbertPerformanceSearch() async {
+    func testDistilbertPerformanceSearch() {
         let testAmount = 100
         let passageIds = Array(0..<testAmount).map { _ in UUID().uuidString }
         let passageTexts = Array(MSMarco.passageTexts[0..<testAmount])
         let passageUrls = MSMarco.passageUrls[0..<testAmount].map { url in ["source": url] }
 
-        print("\nGenerating similarity index for \(testAmount) passages")
-        let similarityIndex = await SimilarityIndex(model: DistilbertEmbeddings())
-
-        let startTime = CFAbsoluteTimeGetCurrent()
-        await similarityIndex.addItems(
-            ids: passageIds,
-            texts: passageTexts,
-            metadata: passageUrls
-        )
-        let endTime = CFAbsoluteTimeGetCurrent()
-        let elapsedTime = endTime - startTime
-        print("\nGenerating index took \(elapsedTime) s")
-
         let expectation = XCTestExpectation(description: "Searching passage texts")
 
         Task {
+            print("\nGenerating similarity index for \(testAmount) passages")
+            let similarityIndex = await SimilarityIndex(model: DistilbertEmbeddings())
+
+            var startTime = CFAbsoluteTimeGetCurrent()
+            await similarityIndex.addItems(
+                ids: passageIds,
+                texts: passageTexts,
+                metadata: passageUrls
+            )
+            var endTime = CFAbsoluteTimeGetCurrent()
+            var elapsedTime = endTime - startTime
+            print("\nGenerating index took \(elapsedTime) s")
+
             print("\nSearching \(passageTexts.count) passage texts")
-            let startTime = CFAbsoluteTimeGetCurrent()
+            startTime = CFAbsoluteTimeGetCurrent()
 
             let top_k = await similarityIndex.search("what is bitcoin?", top: 100)
 
             XCTAssertNotNil(top_k)
 
-            let endTime = CFAbsoluteTimeGetCurrent()
-            let elapsedTime = endTime - startTime
+            endTime = CFAbsoluteTimeGetCurrent()
+            elapsedTime = endTime - startTime
             let timePerPassageText = elapsedTime / Double(testAmount)
             print("\nSeach time per passage text: \(timePerPassageText) s each, \(elapsedTime) s total\n")
 
             expectation.fulfill()
         }
 
-        await fulfillment(of: [expectation], timeout: 60)
+        wait(for: [expectation], timeout: 60)
     }
 
     func testNativePerformanceTokenization() {}

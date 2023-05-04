@@ -10,12 +10,15 @@ on:
     branches: [ "main" ]
 
 jobs:
+
   test:
 
     runs-on: macos-latest
 
     steps:
     - uses: actions/checkout@v3
+    - name: Lint
+      run: swiftformat . --lint
     - name: Run iOS tests
       run: xcodebuild test -scheme SimilaritySearchKit-Package -destination 'platform=iOS Simulator,name=iPhone 14 Pro Max,OS=latest'
     - name: Run macOS tests
