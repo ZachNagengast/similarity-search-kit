@@ -20,4 +20,4 @@ jobs:
     - name: Run iOS tests
       run: xcodebuild test -scheme SimilaritySearchKit-Package -destination 'platform=iOS Simulator,name=iPhone 14 Pro Max,OS=latest'
     - name: Run macOS tests
-      run: xcodebuild test -scheme SimilaritySearchKit-Package -destination 'platform=macOS,name=Any Mac,OS=latest'
+      run: xcodebuild test -scheme SimilaritySearchKit-Package -destination 'platform=macOS,OS=latest'
