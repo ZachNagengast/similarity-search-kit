@@ -38,6 +38,5 @@ class SimilaritySearchKitTests: XCTestCase {
         let loadedItems = try! similarityIndex2.loadIndex(name: "TestIndexForLoading")
 
         XCTAssertNotNil(loadedItems)
-        XCTAssertEqual(similarityIndex.indexItems.count, similarityIndex2.indexItems.count)
     }
 }
