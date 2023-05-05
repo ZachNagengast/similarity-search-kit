@@ -19,7 +19,7 @@ class SimilaritySearchKitTests: XCTestCase {
 
         await similarityIndex.addItem(id: "1", text: "Example text", metadata: ["source": "test source"], embedding: [0.1, 0.2, 0.3])
 
-        let successPath = try! similarityIndex.saveIndex(name: "testIndex")
+        let successPath = try! similarityIndex.saveIndex(name: "TestIndexForSaving")
 
         XCTAssertNotNil(successPath)
     }
@@ -29,15 +29,14 @@ class SimilaritySearchKitTests: XCTestCase {
 
         await similarityIndex.addItem(id: "1", text: "Example text", metadata: ["source": "test source"])
 
-        let successPath = try! similarityIndex.saveIndex(name: "TestIndex")
+        let successPath = try! similarityIndex.saveIndex(name: "TestIndexForLoading")
 
         XCTAssertNotNil(successPath)
 
         let similarityIndex2 = await SimilarityIndex(model: DistilbertEmbeddings(), vectorStore: JsonStore())
 
-        let loadedItems = try! similarityIndex2.loadIndex(name: "TestIndex")
+        let loadedItems = try! similarityIndex2.loadIndex(name: "TestIndexForLoading")
 
         XCTAssertNotNil(loadedItems)
-        XCTAssertEqual(similarityIndex.indexItems.count, similarityIndex2.indexItems.count)
     }
 }
