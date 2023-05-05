@@ -1,4 +1,5 @@
 # SimilaritySearchKit
+[![](https://img.shields.io/github/actions/workflow/status/ZachNagengast/similarity-search-kit/swift.yml?branch=main)](https://github.com/ZachNagengast/similarity-search-kit/actions/workflows/swift.yml)
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FZachNagengast%2Fsimilarity-search-kit%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/ZachNagengast/similarity-search-kit)
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FZachNagengast%2Fsimilarity-search-kit%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/ZachNagengast/similarity-search-kit)
 [![](https://img.shields.io/badge/Examples-yes-red)](#examples)
