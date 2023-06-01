@@ -198,13 +198,4 @@ Here's a short list of some features that are planned for future releases:
   - Can be used to merge several query results into one, and clean up irrelevant text
 - [ ] Metal acceleration for distance calcs
 
-## Contributing
-
-If you have any ideas, suggestions, or bugs to report, please open an issue or submit a pull request from your fork. Contributions are always welcome!
-
-Notes on the file structure:
-
-- `Sources/SimilaritySearchKit/Core` contains the main similarity search logic and helper methods that run 100% natively (i.e. *no dependencies*).
-- `Sources/SimilaritySearchKit/AddOns` contains optional embedding models, and any other logic that *require external dependencies* and should be added as separate targets and imports. This is intended to reduce the size of the binary for users who don't need them.
-
 I'm curious to see how people use this library and what other features would be useful, so please don't hesitate to reach out over twitter [@ZachNagengast](https://twitter.com/zachnagengast) or email znagengast (at) gmail (dot) com.
