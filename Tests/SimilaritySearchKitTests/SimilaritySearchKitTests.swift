@@ -12,7 +12,7 @@ import CoreML
 @testable import SimilaritySearchKitMiniLMAll
 @testable import SimilaritySearchKitMiniLMMultiQA
 
-@available(macOS 13.0, *)
+@available(macOS 13.0, iOS 16.0, *)
 class SimilaritySearchKitTests: XCTestCase {
     func testSavingIndex() async {
         let similarityIndex = await SimilarityIndex(model: DistilbertEmbeddings(), vectorStore: JsonStore())
