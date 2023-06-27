@@ -12,7 +12,7 @@ import CoreML
 @testable import SimilaritySearchKitMiniLMAll
 @testable import SimilaritySearchKitMiniLMMultiQA
 
-@available(macOS 13.0, *)
+@available(macOS 13.0, iOS 16.0, *)
 class BenchmarkTests: XCTestCase {
     func testDistilbertTokenization() {
         let passageText = MSMarco.testPassage.text
