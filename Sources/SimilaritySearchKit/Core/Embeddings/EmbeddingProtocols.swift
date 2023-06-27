@@ -12,7 +12,7 @@ import Combine
 
 /// A protocol for embedding models that can generate vector representations of text.
 /// Implement this protocol to support different models for encoding text into vectors.
-@available(macOS 12.0, iOS 15.0, *)
+@available(macOS 11.0, iOS 15.0, *)
 public protocol EmbeddingsProtocol {
     /// The associated tokenizer type for the embedding model.
     associatedtype TokenizerType

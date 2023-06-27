@@ -8,7 +8,7 @@
 import Foundation
 import NaturalLanguage
 
-@available(macOS 12.0, iOS 15.0, *)
+@available(macOS 11.0, iOS 15.0, *)
 public class NativeEmbeddings: EmbeddingsProtocol {
     public let model = ModelActor()
     public let tokenizer: any TokenizerProtocol
