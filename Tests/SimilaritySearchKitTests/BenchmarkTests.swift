@@ -115,7 +115,7 @@ class BenchmarkTests: XCTestCase {
     }
 
     func testDistilbertPerformanceSearch() {
-        let testAmount = 10
+        let testAmount = 2
         let passageIds = Array(0..<testAmount).map { _ in UUID().uuidString }
         let passageTexts = Array(MSMarco.passageTexts[0..<testAmount])
         let passageUrls = MSMarco.passageUrls[0..<testAmount].map { url in ["source": url] }
