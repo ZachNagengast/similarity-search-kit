@@ -16,7 +16,7 @@ public typealias SimilarityMetricType = SimilarityIndex.SimilarityMetricType
 public typealias TextSplitterType = SimilarityIndex.TextSplitterType
 public typealias VectorStoreType = SimilarityIndex.VectorStoreType
 
-@available(macOS 12.0, iOS 15.0, *)
+@available(macOS 11.0, iOS 15.0, *)
 public class SimilarityIndex {
     // MARK: - Properties
 
@@ -203,7 +203,7 @@ public class SimilarityIndex {
 
 // MARK: - CRUD
 
-@available(macOS 12.0, iOS 15.0, *)
+@available(macOS 11.0, iOS 15.0, *)
 extension SimilarityIndex {
     // MARK: Create
 
