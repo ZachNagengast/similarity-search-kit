@@ -116,7 +116,7 @@ public class SimilarityIndex {
         if let testVector = await indexModel.encode(sentence: "Test sentence") {
             dimension = testVector.count
         } else {
-            Error("Failed to generate a test input vector.")
+            fatalError("Failed to generate a test input vector.")
         }
     }
 
@@ -267,7 +267,7 @@ extension SimilarityIndex {
     public func updateItem(id: String, text: String? = nil, embedding: [Float]? = nil, metadata: [String: String]? = nil) {
         // Check if the provided embedding has the correct dimension
         if let embedding = embedding, embedding.count != dimension {
-            Error("Dimension mismatch, expected \(dimension), saw \(embedding.count)")
+            fatalError("Dimension mismatch, expected \(dimension), saw \(embedding.count)")
         }
 
         // Find the item with the specified id
