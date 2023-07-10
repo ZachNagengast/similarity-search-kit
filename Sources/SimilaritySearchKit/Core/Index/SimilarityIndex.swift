@@ -169,7 +169,7 @@ public class SimilarityIndex {
                 return SearchResult(id: item.id, score: score, text: item.text, metadata: item.metadata)
             } else {
                 print("Failed to find item with id '\(id)' in indexItems.")
-                return SearchResult(id: "000000", score: 0.0, text: "fail", metadata: []
+                return SearchResult(id: "000000", score: 0.0, text: "fail", metadata: [:])
             }
         }
     }
