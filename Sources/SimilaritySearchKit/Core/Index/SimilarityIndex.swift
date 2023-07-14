@@ -246,8 +246,9 @@ extension SimilarityIndex {
     }
 
     public func addItems(_ items: [IndexItem]) {
+        Task {
         for item in items {
-            Task {
+            
                 await self.addItem(id: item.id, text: item.text, metadata: item.metadata, embedding: item.embedding)
             }
         }
