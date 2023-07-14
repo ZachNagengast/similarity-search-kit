@@ -305,7 +305,7 @@ extension SimilarityIndex {
 
 @available(macOS 13.0, iOS 16.0, *)
 extension SimilarityIndex {
-    func saveIndex(toDirectory path: URL? = nil, name: String? = nil) throws -> URL {
+    public func saveIndex(toDirectory path: URL? = nil, name: String? = nil) throws -> URL {
         let indexName = name ?? self.indexName
         let basePath: URL
 
@@ -323,7 +323,7 @@ extension SimilarityIndex {
         return savedVectorStore
     }
 
-    func loadIndex(fromDirectory path: URL? = nil, name: String? = nil) throws -> [IndexItem]? {
+    public func loadIndex(fromDirectory path: URL? = nil, name: String? = nil) throws -> [IndexItem]? {
         let indexName = name ?? self.indexName
         let basePath: URL
 
