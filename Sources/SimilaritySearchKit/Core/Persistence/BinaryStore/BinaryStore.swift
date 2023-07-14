@@ -8,6 +8,9 @@ import Compression
 import Foundation
 
 public class BinaryStore: VectorStoreProtocol {
+    public init() {
+         print("Initted new BinaryStore")
+    }
     public func saveIndex(items: [IndexItem], to url: URL, as name: String) throws -> URL {
         let fileURL = url.appendingPathComponent("\(name).dat")
         var data = Data()
