@@ -129,7 +129,8 @@ public class SimilarityIndex {
         } else {
             // Encoding needed before adding to index
             guard let encoded = await indexModel.encode(sentence: text) else {
-                fatalError("Failed to encode text.")
+                print("Failed to encode text. \(text)")
+                return Array(repeating: Float(0), count: dimension)
             }
             return encoded
         }
@@ -140,7 +141,8 @@ public class SimilarityIndex {
     public func search(_ query: String, top resultCount: Int? = nil, metric: DistanceMetricProtocol? = nil) async -> [SearchResult] {
         let resultCount = resultCount ?? 5
         guard let queryEmbedding = await indexModel.encode(sentence: query) else {
-            fatalError("Failed to generate query embedding for '\(query)'.")
+            print("Failed to generate query embedding for '\(query)'.")
+            return []
         }
 
         var indexIds: [String] = []
@@ -166,7 +168,8 @@ public class SimilarityIndex {
             if let item = getItem(id: id) {
                 return SearchResult(id: item.id, score: score, text: item.text, metadata: item.metadata)
             } else {
-                fatalError("Failed to find item with id '\(id)' in indexItems.")
+                print("Failed to find item with id '\(id)' in indexItems.")
+                return SearchResult(id: "000000", score: 0.0, text: "fail", metadata: [:])
             }
         }
     }
@@ -222,7 +225,7 @@ extension SimilarityIndex {
         }
 
         if let embeddings = embeddings, embeddings.count != ids.count {
-            fatalError("Embeddings array length must be the same as ids array length.")
+            fatalError("Embeddings array length must be the same as ids array length. \(embeddings.count) vs \(ids.count)")
         }
 
         await withTaskGroup(of: Void.self) { taskGroup in
@@ -243,8 +246,9 @@ extension SimilarityIndex {
     }
 
     public func addItems(_ items: [IndexItem]) {
+        Task {
         for item in items {
-            Task {
+            
                 await self.addItem(id: item.id, text: item.text, metadata: item.metadata, embedding: item.embedding)
             }
         }
@@ -302,7 +306,7 @@ extension SimilarityIndex {
 
 @available(macOS 13.0, iOS 16.0, *)
 extension SimilarityIndex {
-    func saveIndex(toDirectory path: URL? = nil, name: String? = nil) throws -> URL {
+    public func saveIndex(toDirectory path: URL? = nil, name: String? = nil) throws -> URL {
         let indexName = name ?? self.indexName
         let basePath: URL
 
@@ -320,7 +324,7 @@ extension SimilarityIndex {
         return savedVectorStore
     }
 
-    func loadIndex(fromDirectory path: URL? = nil, name: String? = nil) throws -> [IndexItem]? {
+    public func loadIndex(fromDirectory path: URL? = nil, name: String? = nil) throws -> [IndexItem]? {
         let indexName = name ?? self.indexName
         let basePath: URL
 
