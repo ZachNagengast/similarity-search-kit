@@ -14,7 +14,7 @@ import CoreML
 
 @available(macOS 13.0, iOS 16.0, *)
 class SimilaritySearchKitTests: XCTestCase {
-    func testSavingIndex() async {
+    func testSavingJsonIndex() async {
         let similarityIndex = await SimilarityIndex(model: DistilbertEmbeddings(), vectorStore: JsonStore())
 
         await similarityIndex.addItem(id: "1", text: "Example text", metadata: ["source": "test source"], embedding: [0.1, 0.2, 0.3])
@@ -23,8 +23,8 @@ class SimilaritySearchKitTests: XCTestCase {
 
         XCTAssertNotNil(successPath)
     }
-
-    func testLoadingIndex() async {
+    
+    func testLoadingJsonIndex() async {
         let similarityIndex = await SimilarityIndex(model: DistilbertEmbeddings(), vectorStore: JsonStore())
 
         await similarityIndex.addItem(id: "1", text: "Example text", metadata: ["source": "test source"])
@@ -34,6 +34,32 @@ class SimilaritySearchKitTests: XCTestCase {
         XCTAssertNotNil(successPath)
 
         let similarityIndex2 = await SimilarityIndex(model: DistilbertEmbeddings(), vectorStore: JsonStore())
+
+        let loadedItems = try! similarityIndex2.loadIndex(name: "TestIndexForLoading")
+
+        XCTAssertNotNil(loadedItems)
+    }
+
+    func testSavingBinaryIndex() async {
+        let similarityIndex = await SimilarityIndex(model: DistilbertEmbeddings(), vectorStore: BinaryStore())
+
+        await similarityIndex.addItem(id: "1", text: "Example text", metadata: ["source": "test source"], embedding: [0.1, 0.2, 0.3])
+
+        let successPath = try! similarityIndex.saveIndex(name: "TestIndexForSaving")
+
+        XCTAssertNotNil(successPath)
+    }
+
+    func testLoadingBinaryIndex() async {
+        let similarityIndex = await SimilarityIndex(model: DistilbertEmbeddings(), vectorStore: BinaryStore())
+
+        await similarityIndex.addItem(id: "1", text: "Example text", metadata: ["source": "test source"])
+
+        let successPath = try! similarityIndex.saveIndex(name: "TestIndexForLoading")
+
+        XCTAssertNotNil(successPath)
+
+        let similarityIndex2 = await SimilarityIndex(model: DistilbertEmbeddings(), vectorStore: BinaryStore())
 
         let loadedItems = try! similarityIndex2.loadIndex(name: "TestIndexForLoading")
 
