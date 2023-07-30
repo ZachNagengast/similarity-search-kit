@@ -153,11 +153,10 @@ struct ContentView: View {
             chunks = splitText
 
             embeddings = []
-            if let miniqa = index.indexModel as? DistilbertEmbeddings {
-                for chunk in chunks {
-                    if let embedding = await miniqa.encode(sentence: chunk) {
-                        embeddings.append(embedding)
-                    }
+            let embeddingModel = index.indexModel
+            for chunk in chunks {
+                if let embedding = await embeddingModel.encode(sentence: chunk) {
+                    embeddings.append(embedding)
                 }
             }
 
