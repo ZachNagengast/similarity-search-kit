@@ -103,6 +103,8 @@ The `Examples` directory contains multple sample iOS and macOS applications that
 
 Models conform the the `EmbeddingProtocol` and can be used interchangeably with the `SimilarityIndex` class.
 
+A small but growing list of pre-converted models can be found in this repo on [HuggingFace](https://huggingface.co/ZachNagengast/similarity-search-coreml-models/tree/main). If you have a model that you would like to see added to the list, please open an issue or submit a pull request.
+
 ## Available Metrics
 
 | Metric | Description |
