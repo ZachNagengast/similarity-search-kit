@@ -5,7 +5,6 @@
 //
 
 import Foundation
-import SimilaritySearchKit
 
 public class RecursiveCharacterSplitter: TextSplitterProtocol {
     let characterSplitter: CharacterSplitter

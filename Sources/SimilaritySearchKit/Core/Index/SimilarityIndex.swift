@@ -116,7 +116,7 @@ public class SimilarityIndex {
         if let testVector = await indexModel.encode(sentence: "Test sentence") {
             dimension = testVector.count
         } else {
-            fatalError("Failed to generate a test input vector.")
+            print("Failed to generate a test input vector.")
         }
     }
 
@@ -225,7 +225,7 @@ extension SimilarityIndex {
         }
 
         if let embeddings = embeddings, embeddings.count != ids.count {
-            fatalError("Embeddings array length must be the same as ids array length. \(embeddings.count) vs \(ids.count)")
+            print("Embeddings array length must be the same as ids array length. \(embeddings.count) vs \(ids.count)")
         }
 
         await withTaskGroup(of: Void.self) { taskGroup in
@@ -268,7 +268,7 @@ extension SimilarityIndex {
     public func updateItem(id: String, text: String? = nil, embedding: [Float]? = nil, metadata: [String: String]? = nil) {
         // Check if the provided embedding has the correct dimension
         if let embedding = embedding, embedding.count != dimension {
-            fatalError("Dimension mismatch, expected \(dimension), saw \(embedding.count)")
+            print("Dimension mismatch, expected \(dimension), saw \(embedding.count)")
         }
 
         // Find the item with the specified id

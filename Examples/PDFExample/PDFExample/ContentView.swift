@@ -161,7 +161,8 @@ struct ContentView: View {
             }
 
             for (idx, chunk) in chunks.enumerated() {
-                await index.addItem(id: "id\(idx)", text: chunk, metadata: ["source": fileName], embedding: embeddings[idx])
+                let vector = embeddings[idx]
+                await index.addItem(id: "id\(idx)", text: chunk, metadata: ["source": fileName], embedding: vector)
             }
         }
     }
