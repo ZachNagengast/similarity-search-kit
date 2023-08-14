@@ -16,7 +16,7 @@ public class BertTokenizer: TokenizerProtocol {
     private let vocab: [String: Int]
     private let ids_to_tokens: [Int: String]
 
-    public init(vocabText: String?) {
+    public init(vocabText: String? = nil) {
         var vocabTxt = vocabText ?? "";
         if vocabTxt.isEmpty {
             let url =  Bundle.module.url(forResource: "bert_tokenizer_vocab", withExtension: "txt")!
