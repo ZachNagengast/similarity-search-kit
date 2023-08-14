@@ -16,9 +16,12 @@ public class BertTokenizer: TokenizerProtocol {
     private let vocab: [String: Int]
     private let ids_to_tokens: [Int: String]
 
-    public init(vocabUrl: URL? = nil) {
-        let url = vocabUrl ?? Bundle.module.url(forResource: "bert_tokenizer_vocab", withExtension: "txt")!
-        let vocabTxt = try! String(contentsOf: url)
+    public init(vocabText: String?) {
+        var vocabTxt = vocabText ?? "";
+        if vocabText.isEmpty {
+            let url = vocabUrl ?? Bundle.module.url(forResource: "bert_tokenizer_vocab", withExtension: "txt")!
+            vocabTxt = try! String(contentsOf: url)
+        }
         let tokens = vocabTxt.split(separator: "\n").map { String($0) }
         var vocab: [String: Int] = [:]
         var ids_to_tokens: [Int: String] = [:]
