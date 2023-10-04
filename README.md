@@ -185,7 +185,7 @@ This project has been inspired by the incredible advancements in natural languag
 Here's a short list of some features that are planned for future releases:
 
 - [x] In-memory indexing
-- [ ] Disk-backed indexing
+- [x] Disk-backed indexing
   - For large datasets that don't fit in memory
 - [ ] All around performance improvements
 - [ ] Swift-DocC website
