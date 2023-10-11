@@ -16,10 +16,16 @@ struct ContentView: View {
     @State private var querySentence: String = ""
     @State private var similarityResults: [SearchResult] = []
     @State private var similarityIndex: SimilarityIndex?
+    @State private var similarityIndexComparison: SimilarityIndex?
 
     func loadIndex() async {
+        var model: any EmbeddingsProtocol = MiniLMEmbeddings()
+        if #available(macOS 14.0, *) {
+            model = NativeContextualEmbeddings(language: .english)
+        }
+
         similarityIndex = await SimilarityIndex(
-            model: MiniLMEmbeddings(),
+            model: model,
             metric: CosineSimilarity()
         )
     }

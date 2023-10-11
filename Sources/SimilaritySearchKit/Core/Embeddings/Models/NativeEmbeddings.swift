@@ -10,11 +10,12 @@ import NaturalLanguage
 
 @available(macOS 11.0, iOS 15.0, *)
 public class NativeEmbeddings: EmbeddingsProtocol {
-    public let model = ModelActor()
+    public let model: ModelActor
     public let tokenizer: any TokenizerProtocol
 
-    public init() {
+    public init(language: NLLanguage = .english) {
         self.tokenizer = NativeTokenizer()
+        self.model = ModelActor(language: language)
     }
 
     // MARK: - Dense Embeddings
@@ -22,8 +23,8 @@ public class NativeEmbeddings: EmbeddingsProtocol {
     public actor ModelActor {
         private let model: NLEmbedding
 
-        init() {
-            guard let nativeModel = NLEmbedding.sentenceEmbedding(for: .english) else {
+        init(language: NLLanguage) {
+            guard let nativeModel = NLEmbedding.sentenceEmbedding(for: language) else {
                 fatalError("Failed to load the Core ML model.")
             }
             model = nativeModel

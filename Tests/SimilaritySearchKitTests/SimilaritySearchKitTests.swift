@@ -14,6 +14,12 @@ import CoreML
 
 @available(macOS 13.0, iOS 16.0, *)
 class SimilaritySearchKitTests: XCTestCase {
+
+    override func setUp() {
+        executionTimeAllowance = 60
+        continueAfterFailure = true
+    }
+
     func testSavingJsonIndex() async {
         let similarityIndex = await SimilarityIndex(model: DistilbertEmbeddings(), vectorStore: JsonStore())
 

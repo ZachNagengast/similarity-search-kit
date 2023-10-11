@@ -272,7 +272,11 @@ struct ChatWithFilesExampleSwiftUIView: View {
             embeddingModel = MultiQAMiniLMEmbeddings()
             currentTokenizer = BertTokenizer()
         case .native:
-            embeddingModel = NativeEmbeddings()
+            if #available(macOS 14.0, *) {
+                embeddingModel = NativeContextualEmbeddings()
+            } else {
+                embeddingModel = NativeEmbeddings()
+            }
             currentTokenizer = NativeTokenizer()
         }
 
