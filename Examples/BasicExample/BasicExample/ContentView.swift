@@ -20,9 +20,9 @@ struct ContentView: View {
 
     func loadIndex() async {
         var model: any EmbeddingsProtocol = MiniLMEmbeddings()
-        if #available(macOS 14.0, *) {
-            model = NativeContextualEmbeddings(language: .english)
-        }
+        #if canImport(NaturalLanguage.NLContextualEmbedding)
+        embeddingModel = NativeContextualEmbeddings(language: .english)
+        #else
 
         similarityIndex = await SimilarityIndex(
             model: model,

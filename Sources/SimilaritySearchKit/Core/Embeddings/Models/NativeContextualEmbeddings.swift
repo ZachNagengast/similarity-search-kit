@@ -9,6 +9,7 @@ import Foundation
 import NaturalLanguage
 import CoreML
 
+#if canImport(NaturalLanguage.NLContextualEmbedding)
 @available(macOS 14.0, iOS 17.0, *)
 public class NativeContextualEmbeddings: EmbeddingsProtocol {
     public let model: ModelActor
@@ -84,3 +85,5 @@ public class NativeContextualEmbeddings: EmbeddingsProtocol {
         return await model.vector(for: sentence)
     }
 }
+#endif
+
