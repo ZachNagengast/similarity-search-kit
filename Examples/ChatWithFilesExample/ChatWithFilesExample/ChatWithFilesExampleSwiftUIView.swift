@@ -277,7 +277,6 @@ struct ChatWithFilesExampleSwiftUIView: View {
             #else
             embeddingModel = NativeEmbeddings()
             #endif
-            }
             currentTokenizer = NativeTokenizer()
         }
 
