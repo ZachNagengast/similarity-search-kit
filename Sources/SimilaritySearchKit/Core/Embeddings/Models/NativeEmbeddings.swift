@@ -8,7 +8,7 @@
 import Foundation
 import NaturalLanguage
 
-enum NativeEmbeddingType {
+public enum NativeEmbeddingType {
     case wordEmbedding
     case sentenceEmbedding
 }
@@ -18,9 +18,9 @@ public class NativeEmbeddings: EmbeddingsProtocol {
     public let model: ModelActor
     public let tokenizer: any TokenizerProtocol
 
-    public init(language: NLLanguage = .english) {
+    public init(language: NLLanguage = .english, type:NativeEmbeddingType = .sentenceEmbedding) {
         self.tokenizer = NativeTokenizer()
-        self.model = ModelActor(language: language)
+        self.model = ModelActor(language: language, type: type)
     }
 
     // MARK: - Dense Embeddings
