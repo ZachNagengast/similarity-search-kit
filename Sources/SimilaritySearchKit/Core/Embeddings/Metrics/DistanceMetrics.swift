@@ -83,13 +83,16 @@ public func sortedScores(scores: [Float], topK: Int) -> [(Float, Int)] {
     // Combine indices & scores
     let indexedScores = scores.enumerated().map { index, score in (score, index) }
 
-    // Sort by decreasing score
-    let sortedIndexedScores = indexedScores.sorted { $0.0 > $1.0 }
-
-    // Take top k neighbors
-    let results = Array(sortedIndexedScores.prefix(topK))
-
-    return results
+    
+    func compare(a:(Float,Int),b:(Float,Int)) throws -> Bool {
+        return a.0>b.0
+    }
+    do {
+        return try indexedScores.topK(topK, by: compare)
+    }catch{
+        print("There has been an error comparing elements in sortedScores")
+        return []
+    }
 }
 
 /// Helper function to sort distances and return the top K distances with their indices.
@@ -102,11 +105,14 @@ public func sortedDistances(distances: [Float], topK: Int) -> [(Float, Int)] {
     // Combine indices & distances
     let indexedDistances = distances.enumerated().map { index, score in (score, index) }
 
-    // Sort by increasing distance
-    let sortedIndexedDistances = indexedDistances.sorted { $0.0 < $1.0 }
 
-    // Take top k neighbors
-    let results = Array(sortedIndexedDistances.prefix(topK))
-
-    return results
+    func compare(a:(Float,Int),b:(Float,Int)) throws -> Bool {
+        return a.0<b.0
+    }
+    do {
+        return try indexedDistances.topK(topK, by: compare)
+    }catch{
+        print("There has been an error comparing elements in sortedDistances")
+        return []
+    }
 }
