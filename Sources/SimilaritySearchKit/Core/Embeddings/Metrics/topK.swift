@@ -8,8 +8,22 @@
 import Foundation
 
 extension Collection {
-  /// Adapted from https://stackoverflow.com/questions/65746299/how-do-you-find-the-top-3-maximum-values-in-a-swift-dictionary
-    /// TopK and the standard swift implementations switch elements with equal value differently
+    /// Helper function to sort distances and return the top K distances with their indices.
+    ///
+    /// - Parameters:
+    ///     - count:  the number of top distances to return.
+    ///     - by:            ordering of the following form:
+    ///
+    ///- The by parameter accepts a fucntion of the followign form:
+    ///```swift
+    ///(Element, Element) throws -> Bool
+    ///```
+    ///-
+    /// - Returns: ordered array containing the top K distances
+    ///
+    /// Adapted from [Stackoverflow](https://stackoverflow.com/questions/65746299/how-do-you-find-the-top-3-maximum-values-in-a-swift-dictionary)
+    ///
+    /// >Note: TopK and the standard swift implementations switch elements with equal value differently
   public func topK(_ count: Int, by areInIncreasingOrder: (Element, Element) throws -> Bool) rethrows -> [Self.Element] {
       assert(count >= 0,
              """
@@ -22,7 +36,7 @@ extension Collection {
 
     let prefixCount = Swift.min(count, self.count)
 
-    guard prefixCount < (self.count / 10) else {
+    guard prefixCount < self.count / 10 else {
       return Array(try sorted(by: areInIncreasingOrder).prefix(prefixCount))
     }
 
