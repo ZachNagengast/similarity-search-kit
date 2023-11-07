@@ -35,8 +35,8 @@ public class NativeEmbeddings: EmbeddingsProtocol {
                         fatalError("Failed to load the Core ML model.")
                     }
                     model = nativeModel
-                case.wordEmbedding:
-                    guard let nativeModel = NLEmbedding.sentenceEmbedding(for: language) else {
+                case .wordEmbedding:
+                    guard let nativeModel = NLEmbedding.wordEmbedding(for: language) else {
                         fatalError("Failed to load the Core ML model.")
                     }
                     model = nativeModel
