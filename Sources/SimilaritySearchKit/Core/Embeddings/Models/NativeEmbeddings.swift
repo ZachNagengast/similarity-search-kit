@@ -8,14 +8,19 @@
 import Foundation
 import NaturalLanguage
 
+public enum NativeEmbeddingType {
+    case wordEmbedding
+    case sentenceEmbedding
+}
+
 @available(macOS 11.0, iOS 15.0, *)
 public class NativeEmbeddings: EmbeddingsProtocol {
     public let model: ModelActor
     public let tokenizer: any TokenizerProtocol
 
-    public init(language: NLLanguage = .english) {
+    public init(language: NLLanguage = .english, type: NativeEmbeddingType = .sentenceEmbedding) {
         self.tokenizer = NativeTokenizer()
-        self.model = ModelActor(language: language)
+        self.model = ModelActor(language: language, type: type)
     }
 
     // MARK: - Dense Embeddings
@@ -23,11 +28,20 @@ public class NativeEmbeddings: EmbeddingsProtocol {
     public actor ModelActor {
         private let model: NLEmbedding
 
-        init(language: NLLanguage) {
-            guard let nativeModel = NLEmbedding.sentenceEmbedding(for: language) else {
-                fatalError("Failed to load the Core ML model.")
+        init(language: NLLanguage, type:NativeEmbeddingType = .sentenceEmbedding) {
+            switch type {
+                case .sentenceEmbedding:
+                    guard let nativeModel = NLEmbedding.sentenceEmbedding(for: language) else {
+                        fatalError("Failed to load the Core ML model.")
+                    }
+                    model = nativeModel
+                case .wordEmbedding:
+                    guard let nativeModel = NLEmbedding.wordEmbedding(for: language) else {
+                        fatalError("Failed to load the Core ML model.")
+                    }
+                    model = nativeModel
             }
-            model = nativeModel
+            
         }
 
         func vector(for sentence: String) -> [Float]? {
