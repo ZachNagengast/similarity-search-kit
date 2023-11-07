@@ -344,7 +344,7 @@ extension SimilarityIndex {
         return nil
     }
 
-    private func getDefaultStoragePath() throws -> URL {
+    public func getDefaultStoragePath() throws -> URL {
         let appName = Bundle.main.bundleIdentifier ?? "SimilaritySearchKit"
         let fileManager = FileManager.default
         let appSupportDirectory = try fileManager.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
