@@ -18,7 +18,7 @@ public class NativeEmbeddings: EmbeddingsProtocol {
     public let model: ModelActor
     public let tokenizer: any TokenizerProtocol
 
-    public init(language: NLLanguage = .english, type:NativeEmbeddingType = .sentenceEmbedding) {
+    public init(language: NLLanguage = .english, type: NativeEmbeddingType = .sentenceEmbedding) {
         self.tokenizer = NativeTokenizer()
         self.model = ModelActor(language: language, type: type)
     }
@@ -35,8 +35,8 @@ public class NativeEmbeddings: EmbeddingsProtocol {
                         fatalError("Failed to load the Core ML model.")
                     }
                     model = nativeModel
-                case.wordEmbedding:
-                    guard let nativeModel = NLEmbedding.sentenceEmbedding(for: language) else {
+                case .wordEmbedding:
+                    guard let nativeModel = NLEmbedding.wordEmbedding(for: language) else {
                         fatalError("Failed to load the Core ML model.")
                     }
                     model = nativeModel
