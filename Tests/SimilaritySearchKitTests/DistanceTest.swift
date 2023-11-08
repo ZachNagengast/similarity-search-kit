@@ -47,21 +47,20 @@ final class DistanceTest: XCTestCase {
     }
     
     func testExampleStrSlow(){
-        
+        // Measures the speed of the old algorithm
         measure {
             do {
-                let topKcorrect = try Array(randomStringData.sorted(by: sortString).prefix(k))
+                _ = try Array(randomStringData.sorted(by: sortString).prefix(k))
             }catch{
                 print("Error sorting with the old algorithm")
             }
         }
     }
-    func testExampleStrFast(){
-        
-
+    func testExampleStrFast(){        
+        // Measures the speed of the new algorithm
         measure {
             do {
-                let topKfast    = try randomStringData.topK(k, by: sortString)
+                _   = try randomStringData.topK(k, by: sortString)
             }catch{
                 print("Error sorting with the new algorithm")
             }
