@@ -5,8 +5,9 @@
 //  Created by Zach Nagengast on 4/13/23.
 //
 
-import XCTest
 import CoreML
+import XCTest
+
 @testable import SimilaritySearchKit
 @testable import SimilaritySearchKitDistilbert
 @testable import SimilaritySearchKitMiniLMAll
@@ -15,60 +16,72 @@ import CoreML
 @available(macOS 13.0, iOS 16.0, *)
 class SimilaritySearchKitTests: XCTestCase {
 
-    override func setUp() {
-        executionTimeAllowance = 60
-        continueAfterFailure = true
-    }
+  override func setUp() {
+    executionTimeAllowance = 60
+    continueAfterFailure = true
+  }
 
-    func testSavingJsonIndex() async {
-        let similarityIndex = await SimilarityIndex(model: DistilbertEmbeddings(), vectorStore: JsonStore())
+  func testSavingJsonIndex() async {
+    let similarityIndex = await SimilarityIndex(
+      model: DistilbertEmbeddings(), vectorStore: JsonStore())
 
-        await similarityIndex.addItem(id: "1", text: "Example text", metadata: ["source": "test source"], embedding: [0.1, 0.2, 0.3])
+    await similarityIndex.addItem(
+      id: "1", text: "Example text", metadata: ["source": "test source"],
+      embedding: [0.1, 0.2, 0.3])
 
-        let successPath = try! similarityIndex.saveIndex(name: "TestIndexForSaving")
+    let successPath = try! similarityIndex.saveIndex(name: "TestIndexForSaving")
 
-        XCTAssertNotNil(successPath)
-    }
-    
-    func testLoadingJsonIndex() async {
-        let similarityIndex = await SimilarityIndex(model: DistilbertEmbeddings(), vectorStore: JsonStore())
+    XCTAssertNotNil(successPath)
+  }
 
-        await similarityIndex.addItem(id: "1", text: "Example text", metadata: ["source": "test source"])
+  func testLoadingJsonIndex() async {
+    let similarityIndex = await SimilarityIndex(
+      model: DistilbertEmbeddings(), vectorStore: JsonStore())
 
-        let successPath = try! similarityIndex.saveIndex(name: "TestIndexForLoading")
+    await similarityIndex.addItem(
+      id: "1", text: "Example text", metadata: ["source": "test source"])
 
-        XCTAssertNotNil(successPath)
+    let successPath = try! similarityIndex.saveIndex(name: "TestIndexForLoading")
 
-        let similarityIndex2 = await SimilarityIndex(model: DistilbertEmbeddings(), vectorStore: JsonStore())
+    XCTAssertNotNil(successPath)
 
-        let loadedItems = try! similarityIndex2.loadIndex(name: "TestIndexForLoading")
+    let similarityIndex2 = await SimilarityIndex(
+      model: DistilbertEmbeddings(), vectorStore: JsonStore())
 
-        XCTAssertNotNil(loadedItems)
-    }
+    let loadedItems = try! similarityIndex2.loadIndex(name: "TestIndexForLoading")
 
-    func testSavingBinaryIndex() async {
-        let similarityIndex = await SimilarityIndex(model: DistilbertEmbeddings(), vectorStore: BinaryStore())
+    XCTAssertNotNil(loadedItems)
+  }
 
-        await similarityIndex.addItem(id: "1", text: "Example text", metadata: ["source": "test source"], embedding: [0.1, 0.2, 0.3])
+  func testSavingBinaryIndex() async {
+    let similarityIndex = await SimilarityIndex(
+      model: DistilbertEmbeddings(), vectorStore: BinaryStore())
 
-        let successPath = try! similarityIndex.saveIndex(name: "TestIndexForSaving")
+    await similarityIndex.addItem(
+      id: "1", text: "Example text", metadata: ["source": "test source"],
+      embedding: [0.1, 0.2, 0.3])
 
-        XCTAssertNotNil(successPath)
-    }
+    let successPath = try! similarityIndex.saveIndex(name: "TestIndexForSaving")
 
-    func testLoadingBinaryIndex() async {
-        let similarityIndex = await SimilarityIndex(model: DistilbertEmbeddings(), vectorStore: BinaryStore())
+    XCTAssertNotNil(successPath)
+  }
 
-        await similarityIndex.addItem(id: "1", text: "Example text", metadata: ["source": "test source"])
+  func testLoadingBinaryIndex() async {
+    let similarityIndex = await SimilarityIndex(
+      model: DistilbertEmbeddings(), vectorStore: BinaryStore())
 
-        let successPath = try! similarityIndex.saveIndex(name: "TestIndexForLoading")
+    await similarityIndex.addItem(
+      id: "1", text: "Example text", metadata: ["source": "test source"])
 
-        XCTAssertNotNil(successPath)
+    let successPath = try! similarityIndex.saveIndex(name: "TestIndexForLoading")
 
-        let similarityIndex2 = await SimilarityIndex(model: DistilbertEmbeddings(), vectorStore: BinaryStore())
+    XCTAssertNotNil(successPath)
 
-        let loadedItems = try! similarityIndex2.loadIndex(name: "TestIndexForLoading")
+    let similarityIndex2 = await SimilarityIndex(
+      model: DistilbertEmbeddings(), vectorStore: BinaryStore())
 
-        XCTAssertNotNil(loadedItems)
-    }
+    let loadedItems = try! similarityIndex2.loadIndex(name: "TestIndexForLoading")
+
+    XCTAssertNotNil(loadedItems)
+  }
 }
