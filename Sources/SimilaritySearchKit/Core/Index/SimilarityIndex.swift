@@ -324,26 +324,24 @@ extension SimilarityIndex {
     }
 
     public func loadIndex(fromDirectory path: URL? = nil, name: String? = nil) throws -> [IndexItem]? {
-
-        if let vectorStorePath = try getDefaultStorageFilePath(fromDirectory:path, name:name) {
-            let loadedIndexItems = try vectorStore.loadIndex(from: vectorStorePath)
+        if let indexPath = try getIndexPath(fromDirectory: path, name: name) {
+            let loadedIndexItems = try vectorStore.loadIndex(from: indexPath)
             addItems(loadedIndexItems)
-            print("Loaded \(indexItems.count) index items from \(vectorStorePath.absoluteString)")
+            print("Loaded \(indexItems.count) index items from \(indexPath.absoluteString)")
             return loadedIndexItems
         }
 
         return nil
     }
-    
-    ///This function returns the default location where the data from the loadIndex/saveIndex functions gets stored
-    ///gets stored.
-    ///- Parameters:
-    ///     - fromDirectory: optional directory path where the file postfix is added to
-    ///     - name:             optional name
+
+    /// This function returns the default location where the data from the loadIndex/saveIndex functions gets stored
+    /// gets stored.
+    /// - Parameters:
+    ///   - fromDirectory: optional directory path where the file postfix is added to
+    ///   - name: optional name
     ///
     /// - Returns: an optional URL
-    /// 
-    public func getDefaultStorageFilePath(fromDirectory path: URL? = nil, name: String? = nil) throws -> URL? {
+    public func getIndexPath(fromDirectory path: URL? = nil, name: String? = nil) throws -> URL? {
         let indexName = name ?? self.indexName
         let basePath: URL
 

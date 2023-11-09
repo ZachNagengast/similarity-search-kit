@@ -76,20 +76,23 @@ public struct EuclideanDistance: DistanceMetricProtocol {
 /// Helper function to sort scores and return the top K scores with their indices.
 ///
 /// - Parameters:
-/// - scores: An array of Float values representing scores.
-/// - topK: The number of top scores to return.
+///   - scores: An array of Float values representing scores.
+///   - topK: The number of top scores to return.
+///
 /// - Returns: An array of tuples containing the top K scores and their corresponding indices.
 public func sortedScores(scores: [Float], topK: Int) -> [(Float, Int)] {
     // Combine indices & scores
     let indexedScores = scores.enumerated().map { index, score in (score, index) }
 
-    
-    func compare(a:(Float,Int),b:(Float,Int)) throws -> Bool {
-        return a.0>b.0
+    // Sort by decreasing score
+    func compare(a: (Float, Int), b: (Float, Int)) throws -> Bool {
+        return a.0 > b.0
     }
+
+    // Take top k neighbors
     do {
         return try indexedScores.topK(topK, by: compare)
-    }catch{
+    } catch {
         print("There has been an error comparing elements in sortedScores")
         return []
     }
@@ -98,20 +101,23 @@ public func sortedScores(scores: [Float], topK: Int) -> [(Float, Int)] {
 /// Helper function to sort distances and return the top K distances with their indices.
 ///
 /// - Parameters:
-/// - distances: An array of Float values representing distances.
-/// - topK: The number of top distances to return.
+///   - distances: An array of Float values representing distances.
+///   - topK: The number of top distances to return.
+///   
 /// - Returns: An array of tuples containing the top K distances and their corresponding indices.
 public func sortedDistances(distances: [Float], topK: Int) -> [(Float, Int)] {
     // Combine indices & distances
     let indexedDistances = distances.enumerated().map { index, score in (score, index) }
 
-
-    func compare(a:(Float,Int),b:(Float,Int)) throws -> Bool {
-        return a.0<b.0
+    // Sort by increasing distance
+    func compare(a: (Float, Int), b: (Float, Int)) throws -> Bool {
+        return a.0 < b.0
     }
+
+    // Take top k neighbors
     do {
         return try indexedDistances.topK(topK, by: compare)
-    }catch{
+    } catch {
         print("There has been an error comparing elements in sortedDistances")
         return []
     }
