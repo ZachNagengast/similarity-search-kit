@@ -38,9 +38,9 @@ public protocol DistanceMetricProtocol {
     /// Find the nearest neighbors given a query embedding vector and a list of embeddings vectors.
     ///
     /// - Parameters:
-    /// - queryEmbedding: A `[Float]` array representing the query embedding vector.
-    /// - itemEmbeddings: A `[[Float]]` array representing the list of embeddings vectors to search within.
-    /// - resultsCount: An Int representing the number of nearest neighbors to return.
+    ///   - queryEmbedding: A `[Float]` array representing the query embedding vector.
+    ///   - itemEmbeddings: A `[[Float]]` array representing the list of embeddings vectors to search within.
+    ///   - resultsCount: An Int representing the number of nearest neighbors to return.
     ///
     /// - Returns: A `[(Float, Int)]` array, where each tuple contains the similarity score and the index of the corresponding item in `neighborEmbeddings`. The array is sorted by decreasing similarity ranking.
     func findNearest(for queryEmbedding: [Float], in neighborEmbeddings: [[Float]], resultsCount: Int) -> [(Float, Int)]
