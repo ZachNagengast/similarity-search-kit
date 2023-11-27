@@ -49,7 +49,7 @@ public class BGEEmbeddings: EmbeddingsProtocol {
 
     guard let embeddings = output?.last_hidden_state else {
       return nil
-    } 
+    }
 
     let embeddingsArray: [Float] = (0..<embeddings.count).map { Float(embeddings[$0].floatValue) }
 
