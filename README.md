@@ -119,7 +119,7 @@ Metrics conform to the `DistanceMetricProtocol` and can be used interchangeably 
 
 All the main parts of the `SimilarityIndex` can be overriden with custom implementations that conform to the following protocols:
 
-### EmbeddingProtocol
+### EmbeddingsProtocol
 
 Accepts a string and returns an array of floats representing the embedding of the input text.
 
