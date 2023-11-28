@@ -9,6 +9,7 @@ import XCTest
 import CoreML
 @testable import SimilaritySearchKit
 @testable import SimilaritySearchKitDistilbert
+@testable import SimilaritySearchKitBGE
 @testable import SimilaritySearchKitMiniLMAll
 @testable import SimilaritySearchKitMiniLMMultiQA
 
@@ -32,6 +33,56 @@ class BenchmarkTests: XCTestCase {
         let embeddings = await model.encode(sentence: text)
 
         XCTAssertNotNil(embeddings)
+    }
+    
+    func testBGEEmbeddings() async {
+        let text = MSMarco.testPassage.text
+        
+        let model = BGEEmbeddings()
+        
+        let embeddings = await model.encode(sentence: text)
+
+        XCTAssertNotNil(embeddings)
+    }
+    func testBGESearch() {
+        let searchResults = ["nappy","a moose runs amok through the park, chased by a lion", "a toddler runs giggling through the park, chased by dad", ]
+        let testQuery = "a laughing baby gurgles happily in the arms of its father, gazing up at his eyes"
+        
+        
+
+        let expectation = XCTestExpectation(description: "Encoding passage texts")
+
+        Task {
+            let similarityIndex = await SimilarityIndex(model: BGEEmbeddings())
+//            let webIndex = await SimilarityIndex(model: WebEmbeddings())
+            for searchResult in searchResults {
+                let item = SimilarityIndex.SearchResult(id: UUID().uuidString, score: 0, text: searchResult, metadata: [:])
+                  await similarityIndex.addItem(
+                    id: item.id,
+                    text: item.text,
+                    metadata: item.metadata
+                  )
+//                    await webIndex.addItem(
+//                      id: item.id,
+//                      text: item.text,
+//                      metadata: item.metadata
+//                    )
+            }
+
+            let top_k = await similarityIndex.search(testQuery)
+//            let top_k_web = await webIndex.search(testQuery)
+            let searchResult: SimilarityIndex.SearchResult = top_k.first!
+//            let webResult  = top_k_web.first!
+            print("similarity: ", testQuery, "\n vs \n",  (top_k.map { "\($0.score) - \($0.text)" }).joined(separator: "\n") )
+//            print("web similarity: ", testQuery, "\n vs \n", (top_k_web.map { "\($0.score) - \($0.text)" }).joined(separator: "\n"))
+//            XCTAssertEqual(searchResult.text, searchPassage.text)
+//            XCTAssertEqual(searchResult.metadata, searchPassage.metadata)
+            XCTAssertNotEqual(searchResult.score, 0)
+
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 60)
     }
 
     func testDistilbertSearch() {

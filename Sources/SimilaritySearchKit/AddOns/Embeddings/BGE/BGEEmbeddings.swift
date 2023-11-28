@@ -19,13 +19,14 @@ public class BGEEmbeddings: EmbeddingsProtocol {
   public init() {
     let modelConfig = MLModelConfiguration()
     modelConfig.computeUnits = .all
-
+      print("INIT BGE")
     do {
       self.model = try BGE_small(configuration: modelConfig)
     } catch {
       fatalError("Failed to load the Core ML model. Error: \(error.localizedDescription)")
     }
-
+      
+      
     self.tokenizer = BertTokenizer()
   }
 
@@ -33,26 +34,31 @@ public class BGEEmbeddings: EmbeddingsProtocol {
 
   public func encode(sentence: String) async -> [Float]? {
     // Encode input text as bert tokens
-    let inputTokens = tokenizer.buildModelTokens(sentence: sentence)
+      let inputTokens = Array(tokenizer.buildModelTokens(sentence: sentence))
     let (inputIds, attentionMask) = tokenizer.buildModelInputs(from: inputTokens)
 
     // Send tokens through the MLModel
+//      print(inputIds.count, inputIds[0])
+//      print(inputIds, attentionMask)
     let embeddings = generateEmbeddings(inputIds: inputIds, attentionMask: attentionMask)
 
     return embeddings
   }
 
   public func generateEmbeddings(inputIds: MLMultiArray, attentionMask: MLMultiArray) -> [Float]? {
-    let inputFeatures = BGE_smallInput(input_ids: inputIds, attention_mask: attentionMask)
-
+    let inputFeatures = BGE_smallInput(input_ids: inputIds, attention_mask_1: attentionMask)
+//      print(inputFeatures)
     let output = try? model.prediction(input: inputFeatures)
 
-    guard let embeddings = output?.last_hidden_state else {
+    guard let embeddings = output?.var_1059 else {
+        print("failed")
+        print(output)
       return nil
     }
-
+//      print("EMBEDDINGS")
+//      print(embeddings)
     let embeddingsArray: [Float] = (0..<embeddings.count).map { Float(embeddings[$0].floatValue) }
-
+//      print(embeddingsArray)
     return embeddingsArray
   }
 }
