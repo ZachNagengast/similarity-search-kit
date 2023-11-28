@@ -20,7 +20,7 @@ class WebEmbeddings: EmbeddingsProtocol {
     
     let url: String
 
-    public init(url: String = "https://embeddings.magicflow.workers.dev/?texts=hello%20world") {
+    public init(url: String) {
       self.tokenizer = NativeTokenizer()
         self.model = NativeEmbeddings().model
       self.url = url
