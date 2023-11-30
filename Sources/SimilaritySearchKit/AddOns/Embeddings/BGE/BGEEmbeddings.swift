@@ -16,30 +16,29 @@ public class BGEEmbeddings: EmbeddingsProtocol {
   public let inputDimention: Int = 512
   public let outputDimention: Int = 384
 
-  public init() {
+  public init(tokenizer: BertTokenizer? = nil) {
     let modelConfig = MLModelConfiguration()
     modelConfig.computeUnits = .all
-      print("INIT BGE")
+    print("INIT BGE")
     do {
       self.model = try BGE_small(configuration: modelConfig)
     } catch {
       fatalError("Failed to load the Core ML model. Error: \(error.localizedDescription)")
     }
-      
-      
-    self.tokenizer = BertTokenizer()
+
+    self.tokenizer = tokenizer ?? BertTokenizer()
   }
 
   // MARK: - Dense Embeddings
 
   public func encode(sentence: String) async -> [Float]? {
     // Encode input text as bert tokens
-      let inputTokens = Array(tokenizer.buildModelTokens(sentence: sentence))
+    let inputTokens = Array(tokenizer.buildModelTokens(sentence: sentence))
     let (inputIds, attentionMask) = tokenizer.buildModelInputs(from: inputTokens)
 
     // Send tokens through the MLModel
-//      print(inputIds.count, inputIds[0])
-//      print(inputIds, attentionMask)
+    //      print(inputIds.count, inputIds[0])
+    //      print(inputIds, attentionMask)
     let embeddings = generateEmbeddings(inputIds: inputIds, attentionMask: attentionMask)
 
     return embeddings
@@ -47,18 +46,18 @@ public class BGEEmbeddings: EmbeddingsProtocol {
 
   public func generateEmbeddings(inputIds: MLMultiArray, attentionMask: MLMultiArray) -> [Float]? {
     let inputFeatures = BGE_smallInput(input_ids: inputIds, attention_mask_1: attentionMask)
-//      print(inputFeatures)
+    //      print(inputFeatures)
     let output = try? model.prediction(input: inputFeatures)
 
     guard let embeddings = output?.var_1059 else {
-        print("failed")
-        print(output)
+      print("failed")
+      print(output)
       return nil
     }
-//      print("EMBEDDINGS")
-//      print(embeddings)
+    //      print("EMBEDDINGS")
+    //      print(embeddings)
     let embeddingsArray: [Float] = (0..<embeddings.count).map { Float(embeddings[$0].floatValue) }
-//      print(embeddingsArray)
+    //      print(embeddingsArray)
     return embeddingsArray
   }
 }
