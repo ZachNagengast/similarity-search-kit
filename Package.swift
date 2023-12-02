@@ -15,10 +15,6 @@ let package = Package(
             targets: ["SimilaritySearchKit"]
         ),
         .library(
-            name: "SimilaritySearchKitBGE",
-            targets: ["SimilaritySearchKitBGE"]
-        ),
-        .library(
             name: "SimilaritySearchKitDistilbert",
             targets: ["SimilaritySearchKitDistilbert"]
         ),
@@ -38,12 +34,6 @@ let package = Package(
             dependencies: [],
             path: "Sources/SimilaritySearchKit/Core",
             resources: [.process("Resources")]
-        ),
-        .target(
-            name: "SimilaritySearchKitBGE",
-            dependencies: ["SimilaritySearchKit"],
-            path: "Sources/SimilaritySearchKit/AddOns/Embeddings/BGE",
-            resources: [.process("BGE_small")]
         ),
         .target(
             name: "SimilaritySearchKitDistilbert",
