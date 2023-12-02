@@ -55,7 +55,6 @@ let package = Package(
             dependencies: [
                 "SimilaritySearchKit",
                 "SimilaritySearchKitDistilbert",
-                "SimilaritySearchKitBGE",
                 "SimilaritySearchKitMiniLMAll",
                 "SimilaritySearchKitMiniLMMultiQA",
             ],
