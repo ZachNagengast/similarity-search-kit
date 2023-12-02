@@ -19,7 +19,7 @@ public class BGEEmbeddings: EmbeddingsProtocol {
   public init(tokenizer: BertTokenizer? = nil) {
     let modelConfig = MLModelConfiguration()
     modelConfig.computeUnits = .all
-    print("INIT BGE")
+      print("INIT BGE", tokenizer == nil ? "NO TOKENIZER" : "tokenizer provided")
     do {
       self.model = try BGE_small(configuration: modelConfig)
     } catch {
