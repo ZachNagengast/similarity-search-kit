@@ -12,6 +12,7 @@ let package = Package(
     products: [
         .library(
             name: "SimilaritySearchKit",
+            type: Product.Library.LibraryType.dynamic,
             targets: ["SimilaritySearchKit"]
         ),
         .library(
@@ -20,6 +21,7 @@ let package = Package(
         ),
         .library(
             name: "SimilaritySearchKitBGE",
+            type: Product.Library.LibraryType.dynamic,
             targets: ["SimilaritySearchKitBGE"]
         ),
         .library(
@@ -42,7 +44,7 @@ let package = Package(
             name: "SimilaritySearchKitBGE",
             dependencies: ["SimilaritySearchKit"],
             path: "Sources/SimilaritySearchKit/AddOns/Embeddings/BGE",
-            resources: [.process("Resources")]
+            resources: [.process("BGE_small")]
         ),
         .target(
             name: "SimilaritySearchKitDistilbert",
