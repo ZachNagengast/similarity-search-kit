@@ -5,7 +5,10 @@
 ////  Created by Michael Jelly on 28/11/23.
 ////
 //
+
 import Foundation
+import SimilaritySearchKit
+
 
 //
 //@available(macOS 11.0, iOS 15.0, *)
