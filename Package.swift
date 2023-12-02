@@ -41,7 +41,8 @@ let package = Package(
         .target(
             name: "SimilaritySearchKitBGE",
             dependencies: ["SimilaritySearchKit"],
-            path: "Sources/SimilaritySearchKit/AddOns/Embeddings/BGE"
+            path: "Sources/SimilaritySearchKit/AddOns/Embeddings/BGE",
+            resources: [.process("Resources")]
         ),
         .target(
             name: "SimilaritySearchKitDistilbert",

@@ -22,9 +22,12 @@ public class BGEEmbeddings: EmbeddingsProtocol {
       print("INIT BGE", tokenizer == nil ? "NO TOKENIZER" : "tokenizer provided")
     do {
       self.model = try BGE_small(configuration: modelConfig)
+        print("INIT BGE MODEL LOADED")
+
     } catch {
       fatalError("Failed to load the Core ML model. Error: \(error.localizedDescription)")
     }
+      print("INIT BGE Tokenizer adding")
 
     self.tokenizer = tokenizer ?? BertTokenizer()
   }
