@@ -18,6 +18,7 @@ let package = Package(
             name: "SimilaritySearchKitDistilbert",
             targets: ["SimilaritySearchKitDistilbert"]
         ),
+        
         .library(
             name: "SimilaritySearchKitMiniLMAll",
             targets: ["SimilaritySearchKitMiniLMAll"]
