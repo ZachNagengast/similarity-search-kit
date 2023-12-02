@@ -9,7 +9,6 @@ import XCTest
 import CoreML
 @testable import SimilaritySearchKit
 @testable import SimilaritySearchKitDistilbert
-@testable import SimilaritySearchKitBGE
 @testable import SimilaritySearchKitMiniLMAll
 @testable import SimilaritySearchKitMiniLMMultiQA
 
