@@ -12,18 +12,17 @@ let package = Package(
     products: [
         .library(
             name: "SimilaritySearchKit",
-            type: Product.Library.LibraryType.dynamic,
             targets: ["SimilaritySearchKit"]
+        ),
+        .library(
+            name: "SimilaritySearchKitBGE",
+            targets: ["SimilaritySearchKitBGE"]
         ),
         .library(
             name: "SimilaritySearchKitDistilbert",
             targets: ["SimilaritySearchKitDistilbert"]
         ),
-        .library(
-            name: "SimilaritySearchKitBGE",
-            type: Product.Library.LibraryType.dynamic,
-            targets: ["SimilaritySearchKitBGE"]
-        ),
+        
         .library(
             name: "SimilaritySearchKitMiniLMAll",
             targets: ["SimilaritySearchKitMiniLMAll"]
