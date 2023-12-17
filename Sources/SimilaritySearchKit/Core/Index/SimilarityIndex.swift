@@ -245,11 +245,12 @@ extension SimilarityIndex {
         }
     }
 
-    public func addItems(_ items: [IndexItem]) {
+    public func addItems(_ items: [IndexItem], completion: (() -> Void)? = nil) {
         Task {
             for item in items {
                 await self.addItem(id: item.id, text: item.text, metadata: item.metadata, embedding: item.embedding)
             }
+            completion?()
         }
     }
 
@@ -326,8 +327,9 @@ extension SimilarityIndex {
     public func loadIndex(fromDirectory path: URL? = nil, name: String? = nil) throws -> [IndexItem]? {
         if let indexPath = try getIndexPath(fromDirectory: path, name: name) {
             let loadedIndexItems = try vectorStore.loadIndex(from: indexPath)
-            addItems(loadedIndexItems)
-            print("Loaded \(indexItems.count) index items from \(indexPath.absoluteString)")
+            addItems(loadedIndexItems) {[self] in
+                print("Loaded \(indexItems.count) index items from \(indexPath.absoluteString)")
+            }
             return loadedIndexItems
         }
 
