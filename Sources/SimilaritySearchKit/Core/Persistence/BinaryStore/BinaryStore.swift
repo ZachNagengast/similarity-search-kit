@@ -39,8 +39,9 @@ public class BinaryStore: VectorStoreProtocol {
     public func loadIndex(from url: URL) throws -> [IndexItem] {
         let compressedData = try Data(contentsOf: url)
         let decompressedData = compressedData.withUnsafeBytes { ptr -> Data in
-            let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: compressedData.count * 5) // assuming the compressed data is at most 5 times smaller than the original data
-            let decompressedSize = compression_decode_buffer(buffer, compressedData.count * 5, ptr.baseAddress!.assumingMemoryBound(to: UInt8.self), compressedData.count, nil, COMPRESSION_LZMA)
+            let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: compressedData.count * 10) // assuming the compressed data is at most 10 times smaller than the original data
+            let decompressedSize = compression_decode_buffer(buffer, compressedData.count * 10, ptr.baseAddress!.assumingMemoryBound(to: UInt8.self), compressedData.count, nil, COMPRESSION_LZMA)
+//                    print("Decompressed data size: \(decompressedSize), buffer size: \(compressedData.count * 10)")
             return Data(bytes: buffer, count: decompressedSize)
         }
 
