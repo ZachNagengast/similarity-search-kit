@@ -34,7 +34,7 @@ public class MiniLMEmbeddings: EmbeddingsProtocol {
     public func encode(sentence: String) async -> [Float]? {
         // Encode input text as bert tokens
         let inputTokens = tokenizer.buildModelTokens(sentence: sentence)
-        let (inputIds, attentionMask) = tokenizer.buildModelInputs(from: inputTokens)
+        let (inputIds, _, attentionMask) = tokenizer.buildModelInputs(from: inputTokens)
 
         // Send tokens through the MLModel
         let embeddings = generateEmbeddings(inputIds: inputIds, attentionMask: attentionMask)

@@ -58,8 +58,20 @@ public class BertTokenizer: TokenizerProtocol {
         return decodedString
     }
 
-    public func buildModelInputs(from inputTokens: [Int]) -> (MLMultiArray, MLMultiArray) {
+    public func buildModelInputs(from inputTokens: [Int]) -> (MLMultiArray, MLMultiArray, MLMultiArray) {
         let inputIds = MLMultiArray.from(inputTokens, dims: 2)
+        
+        var encounteredSep = false
+        let sepToken = tokenToId(token: "[SEP]")
+        let tokenTypeIdValues: [Int] = inputTokens.map { token in
+            if token == sepToken {
+                encounteredSep = true
+            }
+            return encounteredSep ? 1 : 0
+        }
+        
+        let tokenTypeIds = MLMultiArray.from(tokenTypeIdValues, dims: 2)
+        
         let maskValue = 1
 
         let attentionMaskValues: [Int] = inputTokens.map { token in
@@ -68,7 +80,7 @@ public class BertTokenizer: TokenizerProtocol {
 
         let attentionMask = MLMultiArray.from(attentionMaskValues, dims: 2)
 
-        return (inputIds, attentionMask)
+        return (inputIds, tokenTypeIds, attentionMask)
     }
 
     public func tokenize(text: String) -> [String] {
