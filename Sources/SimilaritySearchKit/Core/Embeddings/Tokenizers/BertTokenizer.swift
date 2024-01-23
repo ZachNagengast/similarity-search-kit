@@ -70,6 +70,32 @@ public class BertTokenizer: TokenizerProtocol {
 
         return (inputIds, attentionMask)
     }
+    
+    /**
+     Builds model inputs with type IDs from the given input tokens.
+
+     - Parameters:
+       - inputTokens: An array of integers representing input tokens.
+
+     - Returns: A tuple containing three `MLMultiArray` objects:
+       - The first `MLMultiArray` represents input IDs.
+       - The second `MLMultiArray` is the attention mask.
+       - The third `MLMultiArray` contains token type IDs.
+    */
+    public func buildModelInputsWithTypeIds(from inputTokens: [Int]) -> (MLMultiArray, MLMultiArray, MLMultiArray) {
+        let (inputIds, attentionMask) = buildModelInputs(from: inputTokens)
+        
+        var encounteredSep = false
+        let sepToken = tokenToId(token: "[SEP]")
+        let tokenTypeIdValues: [Int] = inputTokens.map { token in
+            if token == sepToken {
+                encounteredSep = true
+            }
+            return encounteredSep ? 1 : 0
+        }
+        let tokenTypeIds = MLMultiArray.from(tokenTypeIdValues, dims: 2)
+        return (inputIds, attentionMask, tokenTypeIds)
+    }
 
     public func tokenize(text: String) -> [String] {
         var tokens: [String] = []

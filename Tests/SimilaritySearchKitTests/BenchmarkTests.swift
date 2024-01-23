@@ -19,9 +19,10 @@ class BenchmarkTests: XCTestCase {
         let tokenizer = BertTokenizer()
 
         let tokenIds = tokenizer.buildModelTokens(sentence: passageText)
-        let (inputIds, attentionMask) = tokenizer.buildModelInputs(from: tokenIds)
+        let (inputIds, attentionMask, tokenTypeIds) = tokenizer.buildModelInputsWithTypeIds(from: tokenIds)
 
         XCTAssertEqual(MLMultiArray.toIntArray(inputIds), MSMarco.testPassage.tokens)
+        XCTAssertEqual(MLMultiArray.toIntArray(tokenTypeIds), MSMarco.testPassage.tokenTypeIds)
         XCTAssertEqual(MLMultiArray.toIntArray(attentionMask), MSMarco.testPassage.attentionMask)
     }
 
