@@ -110,7 +110,7 @@ A small but growing list of pre-converted models can be found in this repo on [H
 | Metric | Description |
 | --- | --- |
 | `DotProduct` | Measures the similarity between two vectors as the product of their magnitudes |
-| `CostineSimilarity` | Calculates similarity by measuring the cosine of the angle between two vectors |
+| `CosineSimilarity` | Calculates similarity by measuring the cosine of the angle between two vectors |
 | `EuclideanDistance` | Computes the straight-line distance between two points in Euclidean space |
 
 Metrics conform to the `DistanceMetricProtocol` and can be used interchangeably with the `SimilarityIndex` class.
