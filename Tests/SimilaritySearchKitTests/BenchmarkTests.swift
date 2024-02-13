@@ -41,7 +41,8 @@ class BenchmarkTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Encoding passage texts")
 
         Task {
-            let similarityIndex = await SimilarityIndex(model: DistilbertEmbeddings())
+            let similarityIndex = SimilarityIndex(model: DistilbertEmbeddings())
+            await similarityIndex.setupDimension()
             await similarityIndex.addItems(
                 ids: [UUID().uuidString],
                 texts: [searchPassage.text],
@@ -125,8 +126,8 @@ class BenchmarkTests: XCTestCase {
 
         Task {
             print("\nGenerating similarity index for \(testAmount) passages")
-            let similarityIndex = await SimilarityIndex(model: DistilbertEmbeddings())
-
+            let similarityIndex = SimilarityIndex(model: DistilbertEmbeddings())
+            await similarityIndex.setupDimension()
             var startTime = CFAbsoluteTimeGetCurrent()
             await similarityIndex.addItems(
                 ids: passageIds,

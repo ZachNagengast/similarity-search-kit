@@ -101,18 +101,16 @@ public class SimilarityIndex {
 
     // MARK: - Initializers
 
-    public init(name: String? = nil, model: (any EmbeddingsProtocol)? = nil, metric: (any DistanceMetricProtocol)? = nil, vectorStore: (any VectorStoreProtocol)? = nil) async {
+    public init(name: String? = nil, model: (any EmbeddingsProtocol)? = nil, metric: (any DistanceMetricProtocol)? = nil, vectorStore: (any VectorStoreProtocol)? = nil) {
         // Setup index with defaults
         self.indexName = name ?? "SimilaritySearchKitIndex"
         self.indexModel = model ?? NativeEmbeddings()
         self.indexMetric = metric ?? CosineSimilarity()
         self.vectorStore = vectorStore ?? JsonStore()
-
-        // Run the model once to discover dimention size
-        await setupDimension()
     }
 
-    private func setupDimension() async {
+    // Run the model once to discover dimention size
+    public func setupDimension() async {
         if let testVector = await indexModel.encode(sentence: "Test sentence") {
             dimension = testVector.count
         } else {
