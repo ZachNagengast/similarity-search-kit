@@ -38,9 +38,16 @@ public class NativeContextualEmbeddings: EmbeddingsProtocol {
     // Common model initialization logic
     private static func initializeModel(_ nativeModel: NLContextualEmbedding) {
         if !nativeModel.hasAvailableAssets {
-            nativeModel.requestAssets { _, _ in }
+            nativeModel.requestAssets { result, error in
+                guard result == .available else {
+                    return
+                }
+
+                try? nativeModel.load()
+            }
+        } else {
+            try? nativeModel.load()
         }
-        try! nativeModel.load()
     }
 
     // MARK: - Dense Embeddings
