@@ -17,7 +17,6 @@ public struct DotProduct: DistanceMetricProtocol {
 
     public func findNearest(for queryEmbedding: [Float], in neighborEmbeddings: [[Float]], resultsCount: Int) -> [(Float, Int)] {
         let scores = neighborEmbeddings.map { distance(between: queryEmbedding, and: $0) }
-
         return sortedScores(scores: scores, topK: resultsCount)
     }
 
@@ -25,6 +24,7 @@ public struct DotProduct: DistanceMetricProtocol {
         let dotProduct = zip(firstEmbedding, secondEmbedding).map(*).reduce(0, +)
         return dotProduct
     }
+	
 }
 
 /// A struct implementing the `DistanceMetricProtocol` using cosine similarity.
@@ -37,7 +37,6 @@ public struct CosineSimilarity: DistanceMetricProtocol {
 
     public func findNearest(for queryEmbedding: [Float], in neighborEmbeddings: [[Float]], resultsCount: Int) -> [(Float, Int)] {
         let scores = neighborEmbeddings.map { distance(between: queryEmbedding, and: $0) }
-
         return sortedScores(scores: scores, topK: resultsCount)
     }
 
@@ -57,11 +56,11 @@ public struct CosineSimilarity: DistanceMetricProtocol {
 ///
 /// - Note: Use this metric when the magnitudes of the embeddings are significant in your use case, and the embeddings are distributed in a Euclidean space.
 public struct EuclideanDistance: DistanceMetricProtocol {
+	
     public init() {}
 
     public func findNearest(for queryEmbedding: [Float], in neighborEmbeddings: [[Float]], resultsCount: Int) -> [(Float, Int)] {
         let distances = neighborEmbeddings.map { distance(between: queryEmbedding, and: $0) }
-
         return sortedDistances(distances: distances, topK: resultsCount)
     }
 

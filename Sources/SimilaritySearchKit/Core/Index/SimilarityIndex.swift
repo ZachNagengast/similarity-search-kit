@@ -17,9 +17,12 @@ public typealias TextSplitterType = SimilarityIndex.TextSplitterType
 public typealias VectorStoreType = SimilarityIndex.VectorStoreType
 
 @available(macOS 11.0, iOS 15.0, *)
-public class SimilarityIndex {
+public class SimilarityIndex: Identifiable {
     // MARK: - Properties
 
+	/// A unique identifier
+	public var id: UUID = UUID()
+	
     /// The items stored in the index.
     public var indexItems: [IndexItem] = []
 
