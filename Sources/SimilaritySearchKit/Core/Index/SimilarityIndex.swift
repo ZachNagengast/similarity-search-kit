@@ -17,7 +17,17 @@ public typealias TextSplitterType = SimilarityIndex.TextSplitterType
 public typealias VectorStoreType = SimilarityIndex.VectorStoreType
 
 @available(macOS 11.0, iOS 15.0, *)
-public class SimilarityIndex: Identifiable {
+public class SimilarityIndex: Identifiable, Hashable {
+	
+	public static func == (lhs: SimilarityIndex, rhs: SimilarityIndex) -> Bool {
+		return lhs.id == rhs.id
+	}
+	
+	
+	public func hash(into hasher: inout Hasher) {
+		hasher.combine(id)
+	}
+	
     // MARK: - Properties
 
 	/// A unique identifier
