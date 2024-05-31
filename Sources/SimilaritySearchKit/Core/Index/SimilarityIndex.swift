@@ -319,6 +319,7 @@ extension SimilarityIndex {
 
 @available(macOS 13.0, iOS 16.0, *)
 extension SimilarityIndex {
+	
     public func saveIndex(toDirectory path: URL? = nil, name: String? = nil) throws -> URL {
         let indexName = name ?? self.indexName
         let basePath: URL
