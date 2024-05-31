@@ -332,7 +332,6 @@ extension SimilarityIndex {
 
         let savedVectorStore = try vectorStore.saveIndex(items: indexItems, to: basePath, as: indexName)
 
-        print("Saved \(indexItems.count) index items to \(savedVectorStore.absoluteString)")
 
         return savedVectorStore
     }
@@ -340,7 +339,6 @@ extension SimilarityIndex {
     public func loadIndex(fromDirectory path: URL? = nil, name: String? = nil) throws -> [IndexItem]? {
         if let indexPath = try getIndexPath(fromDirectory: path, name: name) {
             indexItems = try vectorStore.loadIndex(from: indexPath)
-            print("Loaded \(indexItems.count) index items from \(indexPath.absoluteString)")
             return indexItems
         }
 
