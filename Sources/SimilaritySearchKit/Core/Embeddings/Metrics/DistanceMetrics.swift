@@ -21,10 +21,6 @@ public struct DotProduct: DistanceMetricProtocol {
         return sortedScores(scores: scores, topK: resultsCount)
     }
 
-//    public func distance(between firstEmbedding: [Float], and secondEmbedding: [Float]) -> Float {
-//        let dotProduct = zip(firstEmbedding, secondEmbedding).map(*).reduce(0, +)
-//        return dotProduct
-//    }
 	
 	public func distance(between firstEmbedding: [Float], and secondEmbedding: [Float]) -> Float {
 		// Ensure the embeddings have the same length
@@ -53,14 +49,6 @@ public struct CosineSimilarity: DistanceMetricProtocol {
         return sortedScores(scores: scores, topK: resultsCount)
     }
 
-//    public func distance(between firstEmbedding: [Float], and secondEmbedding: [Float]) -> Float {
-//        // Calculate cosine distance
-//        let dotProduct = zip(firstEmbedding, secondEmbedding).map(*).reduce(0, +)
-//        let firstMagnitude = sqrt(firstEmbedding.map { $0 * $0 }.reduce(0, +))
-//        let secondMagnitude = sqrt(secondEmbedding.map { $0 * $0 }.reduce(0, +))
-//
-//        return dotProduct / (firstMagnitude * secondMagnitude)
-//    }
 	
 	public func distance(between firstEmbedding: [Float], and secondEmbedding: [Float]) -> Float {
 		// Ensure the embeddings have the same length
@@ -98,11 +86,6 @@ public struct EuclideanDistance: DistanceMetricProtocol {
         let distances = neighborEmbeddings.map { distance(between: queryEmbedding, and: $0) }
         return sortedDistances(distances: distances, topK: resultsCount)
     }
-
-//    public func distance(between firstEmbedding: [Float], and secondEmbedding: [Float]) -> Float {
-//        let squaredDifferences = zip(firstEmbedding, secondEmbedding).map { ($0 - $1) * ($0 - $1) }
-//        return sqrt(squaredDifferences.reduce(0, +))
-//    }
 	
 	public func distance(between firstEmbedding: [Float], and secondEmbedding: [Float]) -> Float {
 		// Ensure the embeddings have the same length

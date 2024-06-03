@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import OSLog
 
 // MARK: - Type Aliases
 
@@ -22,7 +23,6 @@ public class SimilarityIndex: Identifiable, Hashable {
 	public static func == (lhs: SimilarityIndex, rhs: SimilarityIndex) -> Bool {
 		return lhs.id == rhs.id
 	}
-	
 	
 	public func hash(into hasher: inout Hasher) {
 		hasher.combine(id)
@@ -333,6 +333,8 @@ extension SimilarityIndex {
 
         let savedVectorStore = try vectorStore.saveIndex(items: indexItems, to: basePath, as: indexName)
 
+		let bundleId: String = Bundle.main.bundleIdentifier ?? "com.similarity-search-kit.logger"
+		let logger: Logger = Logger(subsystem: bundleId, category: "similarityIndexSave")
 
         return savedVectorStore
     }
