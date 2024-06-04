@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import OSLog
 
 // MARK: - Type Aliases
 
@@ -17,9 +18,21 @@ public typealias TextSplitterType = SimilarityIndex.TextSplitterType
 public typealias VectorStoreType = SimilarityIndex.VectorStoreType
 
 @available(macOS 11.0, iOS 15.0, *)
-public class SimilarityIndex {
+public class SimilarityIndex: Identifiable, Hashable {
+	
+	public static func == (lhs: SimilarityIndex, rhs: SimilarityIndex) -> Bool {
+		return lhs.id == rhs.id
+	}
+	
+	public func hash(into hasher: inout Hasher) {
+		hasher.combine(id)
+	}
+	
     // MARK: - Properties
 
+	/// A unique identifier
+	public var id: UUID = UUID()
+	
     /// The items stored in the index.
     public var indexItems: [IndexItem] = []
 
@@ -306,6 +319,7 @@ extension SimilarityIndex {
 
 @available(macOS 13.0, iOS 16.0, *)
 extension SimilarityIndex {
+	
     public func saveIndex(toDirectory path: URL? = nil, name: String? = nil) throws -> URL {
         let indexName = name ?? self.indexName
         let basePath: URL
@@ -319,7 +333,8 @@ extension SimilarityIndex {
 
         let savedVectorStore = try vectorStore.saveIndex(items: indexItems, to: basePath, as: indexName)
 
-        print("Saved \(indexItems.count) index items to \(savedVectorStore.absoluteString)")
+		let bundleId: String = Bundle.main.bundleIdentifier ?? "com.similarity-search-kit.logger"
+		let logger: Logger = Logger(subsystem: bundleId, category: "similarityIndexSave")
 
         return savedVectorStore
     }
@@ -327,7 +342,6 @@ extension SimilarityIndex {
     public func loadIndex(fromDirectory path: URL? = nil, name: String? = nil) throws -> [IndexItem]? {
         if let indexPath = try getIndexPath(fromDirectory: path, name: name) {
             indexItems = try vectorStore.loadIndex(from: indexPath)
-            print("Loaded \(indexItems.count) index items from \(indexPath.absoluteString)")
             return indexItems
         }
 

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Accelerate
 
 /// A struct implementing the `DistanceMetricProtocol` using the dot product.
 ///
@@ -17,14 +18,22 @@ public struct DotProduct: DistanceMetricProtocol {
 
     public func findNearest(for queryEmbedding: [Float], in neighborEmbeddings: [[Float]], resultsCount: Int) -> [(Float, Int)] {
         let scores = neighborEmbeddings.map { distance(between: queryEmbedding, and: $0) }
-
         return sortedScores(scores: scores, topK: resultsCount)
     }
 
-    public func distance(between firstEmbedding: [Float], and secondEmbedding: [Float]) -> Float {
-        let dotProduct = zip(firstEmbedding, secondEmbedding).map(*).reduce(0, +)
-        return dotProduct
-    }
+	
+	public func distance(between firstEmbedding: [Float], and secondEmbedding: [Float]) -> Float {
+		// Ensure the embeddings have the same length
+		precondition(firstEmbedding.count == secondEmbedding.count, "Embeddings must have the same length")
+		
+		var dotProduct: Float = 0
+		
+		// Calculate dot product using Accelerate
+		vDSP_dotpr(firstEmbedding, 1, secondEmbedding, 1, &dotProduct, vDSP_Length(firstEmbedding.count))
+		
+		return dotProduct
+	}
+	
 }
 
 /// A struct implementing the `DistanceMetricProtocol` using cosine similarity.
@@ -37,18 +46,31 @@ public struct CosineSimilarity: DistanceMetricProtocol {
 
     public func findNearest(for queryEmbedding: [Float], in neighborEmbeddings: [[Float]], resultsCount: Int) -> [(Float, Int)] {
         let scores = neighborEmbeddings.map { distance(between: queryEmbedding, and: $0) }
-
         return sortedScores(scores: scores, topK: resultsCount)
     }
 
-    public func distance(between firstEmbedding: [Float], and secondEmbedding: [Float]) -> Float {
-        // Calculate cosine distance
-        let dotProduct = zip(firstEmbedding, secondEmbedding).map(*).reduce(0, +)
-        let firstMagnitude = sqrt(firstEmbedding.map { $0 * $0 }.reduce(0, +))
-        let secondMagnitude = sqrt(secondEmbedding.map { $0 * $0 }.reduce(0, +))
-
-        return dotProduct / (firstMagnitude * secondMagnitude)
-    }
+	
+	public func distance(between firstEmbedding: [Float], and secondEmbedding: [Float]) -> Float {
+		// Ensure the embeddings have the same length
+		precondition(firstEmbedding.count == secondEmbedding.count, "Embeddings must have the same length")
+		
+		var dotProduct: Float = 0
+		var firstMagnitude: Float = 0
+		var secondMagnitude: Float = 0
+		
+		// Calculate dot product and magnitudes using Accelerate
+		vDSP_dotpr(firstEmbedding, 1, secondEmbedding, 1, &dotProduct, vDSP_Length(firstEmbedding.count))
+		vDSP_svesq(firstEmbedding, 1, &firstMagnitude, vDSP_Length(firstEmbedding.count))
+		vDSP_svesq(secondEmbedding, 1, &secondMagnitude, vDSP_Length(secondEmbedding.count))
+		
+		// Take square root of magnitudes
+		firstMagnitude = sqrt(firstMagnitude)
+		secondMagnitude = sqrt(secondMagnitude)
+		
+		// Return cosine similarity
+		return dotProduct / (firstMagnitude * secondMagnitude)
+	}
+	
 }
 
 /// A struct implementing the `DistanceMetricProtocol` using Euclidean distance.
@@ -57,18 +79,26 @@ public struct CosineSimilarity: DistanceMetricProtocol {
 ///
 /// - Note: Use this metric when the magnitudes of the embeddings are significant in your use case, and the embeddings are distributed in a Euclidean space.
 public struct EuclideanDistance: DistanceMetricProtocol {
+	
     public init() {}
 
     public func findNearest(for queryEmbedding: [Float], in neighborEmbeddings: [[Float]], resultsCount: Int) -> [(Float, Int)] {
         let distances = neighborEmbeddings.map { distance(between: queryEmbedding, and: $0) }
-
         return sortedDistances(distances: distances, topK: resultsCount)
     }
-
-    public func distance(between firstEmbedding: [Float], and secondEmbedding: [Float]) -> Float {
-        let squaredDifferences = zip(firstEmbedding, secondEmbedding).map { ($0 - $1) * ($0 - $1) }
-        return sqrt(squaredDifferences.reduce(0, +))
-    }
+	
+	public func distance(between firstEmbedding: [Float], and secondEmbedding: [Float]) -> Float {
+		// Ensure the embeddings have the same length
+		precondition(firstEmbedding.count == secondEmbedding.count, "Embeddings must have the same length")
+		
+		var distance: Float = 0
+		
+		// Calculate squared differences and sum them using Accelerate
+		vDSP_distancesq(firstEmbedding, 1, secondEmbedding, 1, &distance, vDSP_Length(firstEmbedding.count))
+		
+		// Return the square root of the summed squared differences
+		return sqrt(distance)
+	}
 }
 
 // MARK: - Helpers
