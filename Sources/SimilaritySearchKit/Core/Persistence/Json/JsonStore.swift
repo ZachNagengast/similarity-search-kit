@@ -8,7 +8,6 @@
 import Foundation
 
 public class JsonStore: VectorStoreProtocol {
-	
     public func saveIndex(items: [IndexItem], to url: URL, as name: String) throws -> URL {
         let encoder = JSONEncoder()
         let data = try encoder.encode(items)
